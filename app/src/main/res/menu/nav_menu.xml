@@ -18,14 +18,14 @@
             android:title="Settings"/>
 
         <item
-            android:id="@+id/nav_share"
-            android:icon="@drawable/baseline_share_24"
-            android:title="Share"/>
+            android:id="@+id/nav_chart"
+            android:icon="@drawable/baseline_shopping_cart_24"
+            android:title="Chart"/>
 
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/baseline_exit_to_app_24"
-            android:title="About Us"/>
+            android:icon="@drawable/baseline_home_work_24"
+            android:title="About"/>
     </group>
     <item
         android:title="">

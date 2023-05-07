@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab;
     DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
-    Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +58,16 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch (item.getItemId()) {
-                case R.id.home:
+                case R.id.bottom_home:
                     replaceFragment(new HomeFragment());
                     break;
-                case R.id.shorts:
+                case R.id.bottom_about:
                     replaceFragment(new ShortsFragment());
                     break;
-                case R.id.subscriptions:
+                case R.id.bottom_service:
                     replaceFragment(new SubscriptionsFragment());
                     break;
-                case R.id.library:
+                case R.id.bottom_settings:
                     replaceFragment(new LibraryFragment());
                     break;
             }

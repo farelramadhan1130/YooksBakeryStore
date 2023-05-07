@@ -10,8 +10,8 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:layout_width="94dp"
-        android:layout_height="91dp"
+        android:layout_width="77dp"
+        android:layout_height="77dp"
         android:src="@drawable/logoyooks_50" />
 
     <TextView
@@ -24,9 +24,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:text="contact@androidknowledge.com"
         android:textColor="@color/white"
-        android:textSize="14sp"
-        android:layout_marginBottom="16dp"/>
+        android:textSize="14sp" />
 
 </LinearLayout>

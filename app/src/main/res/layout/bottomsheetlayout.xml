@@ -21,12 +21,12 @@
             android:id="@+id/createText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="viewStart"
-            android:text="Create"
-            android:padding="8dp"
-            android:textColor="@color/Orange"
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:text="Chart"
+            android:textAlignment="viewStart"
+            android:textColor="@color/Orange"
             android:textSize="25dp" />
 
         <ImageView
@@ -56,7 +56,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upload a video"
+            android:text="Barang 1"
             android:textColor="@color/Orange"
             android:layout_marginLeft="30dp"
             android:textSize="16sp"/>
@@ -79,7 +79,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create a short"
+            android:text="Barang 2"
             android:textColor="@color/Orange"
             android:layout_marginLeft="30dp"
             android:textSize="16sp"/>
@@ -88,27 +88,27 @@
 
     <LinearLayout
         android:id="@+id/layoutLive"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:paddingTop="10dp"
+        android:paddingRight="10dp"
         android:paddingBottom="30dp">
 
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_cast_connected_24"/>
+            android:src="@drawable/baseline_cast_connected_24" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Go live"
-            android:textColor="@color/Orange"
             android:layout_marginLeft="30dp"
-            android:textSize="16sp"/>
+            android:text="Barang 3"
+            android:textColor="@color/Orange"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
