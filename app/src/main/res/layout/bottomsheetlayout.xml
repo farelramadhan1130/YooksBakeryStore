@@ -30,12 +30,12 @@
             android:textSize="25dp" />
 
         <ImageView
+            android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_clear_24"
             android:layout_marginLeft="250dp"
             android:layout_marginTop="8dp"
-            android:id="@+id/cancelButton"/>
+            android:src="@drawable/baseline_clear_24" />
 
     </LinearLayout>
 
