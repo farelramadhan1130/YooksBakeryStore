@@ -2,9 +2,12 @@ package com.android.yooksbakerystore;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import static java.lang.Thread.sleep;
+
+import java.util.logging.Handler;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -13,14 +16,19 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
 
-        // Delay 2 detik sebelum pindah ke MainActivity
-        new Handler().postDelayed(new Runnable() {
+        Thread thread= new Thread(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                try {
+                    sleep(3000);
+                    Intent i=new Intent(SplashScreenActivity.this,MainActivity.class);
+                    startActivity(i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }, 10000);
+        });
+        thread.start();
     }
 }
+
