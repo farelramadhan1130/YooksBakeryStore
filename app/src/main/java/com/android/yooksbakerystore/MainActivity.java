@@ -98,10 +98,10 @@ public class MainActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheetlayout);
 
-        LinearLayout videoLayout = dialog.findViewById(R.id.layoutVideo);
-        LinearLayout shortsLayout = dialog.findViewById(R.id.layoutShorts);
-        LinearLayout liveLayout = dialog.findViewById(R.id.layoutLive);
-        ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
+        LinearLayout videoLayout = dialog.findViewById(R.id.bottom_home);
+        LinearLayout shortsLayout = dialog.findViewById(R.id.bottom_about);
+        LinearLayout liveLayout = dialog.findViewById(R.id.bottom_service);
+        ImageView cancelButton = dialog.findViewById(R.id.bottom_settings);
 
         videoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
