@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="16dp"
+    android:layout_marginStart="0dp"
+    android:layout_marginEnd="0dp"
     android:background="@drawable/dialogbkg"
     android:orientation="vertical">
 
@@ -21,12 +22,12 @@
 
         <TextView
             android:id="@+id/createText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="5dp"
             android:padding="8dp"
-            android:text="Chart"
+            android:text="Nota"
             android:textAlignment="center"
             android:textColor="@color/Orange"
             android:textSize="25dp"
@@ -69,9 +70,9 @@
                 android:layout_height="wrap_content"
 
                 android:text="$0"
-                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textColor="@color/black"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -169,13 +170,13 @@
             android:id="@+id/textView7"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="CheckOut"
-            android:background="@color/Orange"
             android:layout_margin="16dp"
+            android:background="@color/Orange"
             android:gravity="center"
+            android:text="CheckOut"
             android:textColor="#ffff"
             android:textSize="25sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
