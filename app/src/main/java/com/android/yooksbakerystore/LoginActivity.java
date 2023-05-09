@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText username, password;
+    private TextView textRegister;
     private Button loginButton;
     private String Username = "farelramadhan@gmail.com";
     private String Password = "farelramadhan123";
@@ -26,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         username = findViewById(R.id.input_email);
         password = findViewById(R.id.input_password);
         loginButton = findViewById(R.id.btn_login);
-        TextView textRegister = findViewById(R.id.text_register);
+        textRegister = findViewById(R.id.text_register);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

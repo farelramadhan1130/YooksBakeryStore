@@ -11,7 +11,7 @@
         android:id="@+id/text_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="320dp"
         android:layout_centerHorizontal="true"
         android:textSize="30sp"
         android:text="YOOKS BAKERY"
@@ -52,6 +52,8 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="40dp"
+        android:background="@color/Orange"
+        android:textSize="20sp"
         android:text="Login" />
 
     <!-- Kalimat Register -->
