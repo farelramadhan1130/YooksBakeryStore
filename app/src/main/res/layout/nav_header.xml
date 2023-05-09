@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Android Knowledge"
+        android:text="Farel Ramadhan A."
         android:textColor="@color/white"
         android:textStyle="bold"/>
 
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="contact@androidknowledge.com"
+        android:text="farelramadhan@gmail.com"
         android:textColor="@color/white"
         android:textSize="14sp" />
 
