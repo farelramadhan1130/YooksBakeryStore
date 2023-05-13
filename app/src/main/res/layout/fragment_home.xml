@@ -77,9 +77,10 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
                     android:background="@drawable/banner_orange"
+                    android:backgroundTint="#FF8657"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/search" >
+                    app:layout_constraintTop_toBottomOf="@+id/search">
 
                     <TextView
                         android:id="@+id/textView5"
@@ -111,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Cek Kategori"
+                        android:text="SELENGKAPNYA"
                         android:textSize="5sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
