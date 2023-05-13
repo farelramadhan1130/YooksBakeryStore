@@ -24,6 +24,8 @@
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".SplashScreenActivity"/>
         <activity android:name=".MainActivity"/>
+        <activity android:name=".ChartFragment" />
+        <activity android:name=".NotaActivity"/>
     </application>
 
 </manifest>
