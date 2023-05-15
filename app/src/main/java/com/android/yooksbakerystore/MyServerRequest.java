@@ -28,9 +28,9 @@ public class MyServerRequest {
         this.requestQueue = Volley.newRequestQueue(context);
     }
 
-    public void login(String username, String password, Response.Listener<String> successListener) {
+    public void login(String username, String password, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
         // URL endpoint untuk login
-        String url = "http://yooksbakery.wsmif3a.id/public/api/login";
+        String url = "http://10.10.5.61:8000/api/login";
 
         // membuat objek RequestQueue untuk mengirim request ke server
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -45,7 +45,7 @@ public class MyServerRequest {
                             boolean error = jsonResponse.getBoolean("success");
                             if (error) {
                                 // response dari server jika login berhasil
-                                Intent intent = new Intent(context, HomeFragment.class);
+                                Intent intent = new Intent(context, MainActivity.class);
                                 context.startActivity(intent);
                             } else {
                                 // response dari server jika login gagal
@@ -71,6 +71,7 @@ public class MyServerRequest {
                 return params;
             }
         };
+
         // menambahkan request ke dalam queue
         queue.add(stringRequest);
     }
