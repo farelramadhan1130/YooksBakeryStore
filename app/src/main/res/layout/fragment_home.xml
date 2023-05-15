@@ -77,9 +77,10 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
                     android:background="@drawable/banner_orange"
+                    android:backgroundTint="#FF8657"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/search" >
+                    app:layout_constraintTop_toBottomOf="@+id/search">
 
                     <TextView
                         android:id="@+id/textView5"
@@ -111,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Cek Kategori"
+                        android:text="SELENGKAPNYA"
                         android:textSize="5sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -155,7 +156,7 @@
                             android:layout_marginTop="10dp">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="100dp"
                                 android:layout_height="match_parent"
                                 android:layout_margin="3dp"
                                 android:background="@drawable/bg_kategori"
@@ -180,7 +181,7 @@
                                     android:layout_marginEnd="24dp"
                                     android:layout_marginBottom="8dp"
                                     android:fontFamily="sans-serif-black"
-                                    android:text="Kue Basah"
+                                    android:text="Donat"
                                     android:textAlignment="center"
                                     android:textSize="14sp"
                                     app:layout_constraintBottom_toBottomOf="parent"
@@ -190,7 +191,7 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="100dp"
                                 android:layout_height="match_parent"
                                 android:layout_margin="3dp"
                                 android:background="@drawable/bg_kategori"
@@ -215,7 +216,7 @@
                                     android:layout_marginEnd="24dp"
                                     android:layout_marginBottom="8dp"
                                     android:fontFamily="sans-serif-black"
-                                    android:text="Kue Kering"
+                                    android:text="Roti Isi"
                                     android:textAlignment="center"
                                     android:textSize="14sp"
                                     app:layout_constraintBottom_toBottomOf="parent"
@@ -225,7 +226,7 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="100dp"
                                 android:layout_height="match_parent"
                                 android:layout_margin="3dp"
                                 android:background="@drawable/bg_kategori"
@@ -250,7 +251,7 @@
                                     android:layout_marginEnd="24dp"
                                     android:layout_marginBottom="8dp"
                                     android:fontFamily="sans-serif-black"
-                                    android:text="Kue Ultah"
+                                    android:text="Roti Sisir"
                                     android:textAlignment="center"
                                     android:textSize="14sp"
                                     app:layout_constraintBottom_toBottomOf="parent"
@@ -260,7 +261,7 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="100dp"
                                 android:layout_height="match_parent"
                                 android:layout_margin="3dp"
                                 android:background="@drawable/bg_kategori"
@@ -285,7 +286,7 @@
                                     android:layout_marginEnd="24dp"
                                     android:layout_marginBottom="8dp"
                                     android:fontFamily="sans-serif-black"
-                                    android:text="Jajan Pasar"
+                                    android:text="Roti Selai"
                                     android:textAlignment="center"
                                     android:textSize="12sp"
                                     app:layout_constraintBottom_toBottomOf="parent"
@@ -337,38 +338,43 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/bg_kategori"
                                 android:backgroundTint="#FCDD6F"
+                                android:padding="8dp"
                                 tools:layout_weight="1">
 
-                                <ImageView
-                                    android:id="@+id/imageView2"
+                                <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="64dp"
-                                    android:src="@drawable/burger"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    android:layout_height="match_parent"
+                                    app:cardCornerRadius="15dp">
+
+                                    <ImageView
+                                        android:id="@+id/imageView2"
+                                        android:layout_width="64dp"
+                                        android:layout_height="64dp"
+                                        android:src="@drawable/rotiselaicoklat" />
+                                </androidx.cardview.widget.CardView>
 
                                 <TextView
                                     android:id="@+id/textView9"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:fontFamily="sans-serif-black"
-                                    android:text="Mini Burger"
+                                    android:text="Roti Selai Coklat"
                                     android:textAlignment="center"
                                     android:textSize="16sp"
-                                    app:layout_constraintStart_toEndOf="@+id/imageView2"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:layout_editor_absoluteX="8dp" />
 
                                 <TextView
                                     android:id="@+id/textView2"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Burger berukuran kecil"
+                                    android:textAlignment="center"
                                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                                     app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -389,34 +395,39 @@
                                 android:layout_margin="5dp"
                                 android:background="@drawable/bg_kategori"
                                 android:backgroundTint="#FEDF6F"
+                                android:padding="8dp"
                                 tools:layout_weight="1">
 
-                                <ImageView
-                                    android:id="@+id/imageView2"
+                                <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="64dp"
-                                    android:src="@drawable/cake"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    android:layout_height="wrap_content"
+                                    app:cardCornerRadius="15dp">
+
+                                    <ImageView
+                                        android:id="@+id/imageView2"
+                                        android:layout_width="64dp"
+                                        android:layout_height="64dp"
+                                        android:src="@drawable/rotiselaistroberi" />
+                                </androidx.cardview.widget.CardView>
 
                                 <TextView
                                     android:id="@+id/textView9"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:fontFamily="sans-serif-black"
-                                    android:text="Kue Ultah"
+                                    android:text="Roti Selai Stroberi"
                                     android:textAlignment="center"
                                     android:textSize="16sp"
-                                    app:layout_constraintStart_toEndOf="@+id/imageView2"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:layout_editor_absoluteX="8dp" />
 
                                 <TextView
                                     android:id="@+id/textView2"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Kue dengan Lapisan Cream"
+                                    android:textAlignment="center"
                                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                                     app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -438,35 +449,41 @@
                                 android:layout_margin="5dp"
                                 android:background="@drawable/bg_kategori"
                                 android:backgroundTint="#FEDF6F"
+                                android:padding="8dp"
                                 tools:layout_weight="1">
 
-                                <ImageView
-                                    android:id="@+id/imageView2"
+                                <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="64dp"
-                                    android:src="@drawable/donat"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    android:layout_height="wrap_content"
+                                    app:cardCornerRadius="15dp">
+
+                                    <ImageView
+                                        android:id="@+id/imageView2"
+                                        android:layout_width="64dp"
+                                        android:layout_height="64dp"
+                                        android:src="@drawable/paketdonatkentang1" />
+                                </androidx.cardview.widget.CardView>
 
                                 <TextView
                                     android:id="@+id/textView9"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:fontFamily="sans-serif-black"
                                     android:text="Donat"
                                     android:textAlignment="center"
                                     android:textSize="16sp"
-                                    app:layout_constraintStart_toEndOf="@+id/imageView2"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:layout_editor_absoluteX="8dp" />
 
                                 <TextView
                                     android:id="@+id/textView2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Donat taburan meses dan Keju"
-                                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                                    android:textAlignment="center"
+                                    app:layout_constraintEnd_toEndOf="@+id/textView9"
+                                    app:layout_constraintStart_toStartOf="@+id/textView9"
                                     app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
                                 <Button
@@ -486,36 +503,44 @@
                                 android:layout_height="match_parent"
                                 android:layout_margin="5dp"
                                 android:background="@drawable/bg_kategori"
-                                android:backgroundTint="#FDDE6F"
+                                android:backgroundTint="#FEDF6F"
+                                android:padding="8dp"
                                 tools:layout_weight="1">
 
-                                <ImageView
-                                    android:id="@+id/imageView2"
+                                <androidx.cardview.widget.CardView
                                     android:layout_width="wrap_content"
-                                    android:layout_height="64dp"
-                                    android:src="@drawable/pastel"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    android:layout_height="wrap_content"
+                                    app:cardCornerRadius="15dp"
+                                    tools:layout_editor_absoluteX="8dp"
+                                    tools:layout_editor_absoluteY="8dp">
+
+                                    <ImageView
+                                        android:id="@+id/imageView2"
+                                        android:layout_width="64dp"
+                                        android:layout_height="64dp"
+                                        android:src="@drawable/rotiisidaging" />
+                                </androidx.cardview.widget.CardView>
 
                                 <TextView
                                     android:id="@+id/textView9"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:fontFamily="sans-serif-black"
-                                    android:text="Pastel"
+                                    android:text="Roti Isi Daging"
                                     android:textAlignment="center"
                                     android:textSize="16sp"
-                                    app:layout_constraintStart_toEndOf="@+id/imageView2"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:layout_editor_absoluteX="8dp" />
 
                                 <TextView
                                     android:id="@+id/textView2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Kulit Garing dengan isian sayuran"
-                                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                                    android:text="Roti dengan Isian Daging"
+                                    android:textAlignment="center"
+                                    app:layout_constraintEnd_toEndOf="@+id/textView9"
+                                    app:layout_constraintStart_toStartOf="@+id/textView9"
                                     app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
                                 <Button
