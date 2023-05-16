@@ -53,12 +53,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Ambil Nilai dari EditText email dan password
-                String username = etUsername.getText().toString();
-                String password = etPassword.getText().toString();
+                String email_user = etUsername.getText().toString();
+                String password_user = etPassword.getText().toString();
 
                 // Lakukan request ke server dengan menggunakan Volley
                 MyServerRequest serverRequest = new MyServerRequest(LoginActivity.this);
-                serverRequest.login(username, password, new Response.Listener<String>() {
+                serverRequest.login(email_user, password_user, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // Respon berhasil diterima, lakukan aksi yang diperlukan
