@@ -3,6 +3,7 @@ package com.android.yooksbakerystore;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,9 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
 
     private ProgressDialog progressDialog;
-
-//    private String Username = "farelramadhan@gmail.com";
-//    private String Password = "farelramadhan123";
+    private SharedPreferences sharedPreferences;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -31,24 +30,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.form_login);
 
+        // Mendapatkan instance dari SharedPreferences
+        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
         etUsername = findViewById(R.id.input_email);
         etPassword = findViewById(R.id.input_password);
         btnLogin = findViewById(R.id.btn_login);
         textRegister = findViewById(R.id.text_register);
 
-//        btnLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (email.getText().toString().equalsIgnoreCase(Username) && password.getText().toString().equalsIgnoreCase(Password)){
-//                    Intent login = new Intent(LoginActivity.this, SplashScreenActivity.class);
-//                    startActivity(login);
-//
-//                    Toast.makeText(LoginActivity.this, "Login Berhasil !!", Toast.LENGTH_SHORT).show();
-//                }else{
-//                    Toast.makeText(LoginActivity.this, "Username Atau Password Salah !!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,10 +52,20 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         // Respon berhasil diterima, lakukan aksi yang diperlukan
                         Toast.makeText(LoginActivity.this, "Login berhasil", Toast.LENGTH_SHORT).show();
+
+                        // Set nilai shared preferences isLoggedIn menjadi true
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("isLoggedIn", true);
+                        editor.apply();
+
+                        // Arahkan ke halaman utama (HomeActivity)
+                        Intent intent = new Intent(LoginActivity.this, SplashScreenActivity.class);
+                        startActivity(intent);
+                        finish(); // Tutup activity ini agar pengguna tidak dapat kembali ke halaman login
                     }
-                }, new Response.ErrorListener(){
+                }, new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error){
+                    public void onErrorResponse(VolleyError error) {
                         Toast.makeText(LoginActivity.this, "Terjadi Kesalahan" + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });

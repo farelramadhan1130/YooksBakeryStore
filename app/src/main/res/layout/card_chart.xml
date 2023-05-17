@@ -27,7 +27,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/cake"></ImageView>
+                    android:src="@drawable/cake"/>
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text="cake"
+                    android:text="Roti Harvest"
                     android:textColor="@color/black"
                     android:textSize="17dp"
                     android:textStyle="bold" />
@@ -102,13 +102,12 @@
 
             </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/checkBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1" />
-
+<!--            <CheckBox-->
+<!--                android:id="@+id/checkBox"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_weight="1" />-->
 
         </LinearLayout>
 
