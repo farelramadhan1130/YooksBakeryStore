@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+<<<<<<< HEAD
+=======
+    <uses-permission android:name="android.permission.INTERNET" />
+>>>>>>> f4ca0ceb50d05f7cb465d00f0bdad5c0932a8688
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -23,7 +28,6 @@
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".SplashScreenActivity"/>
         <activity android:name=".MainActivity"/>
-        <activity android:name=".ChartFragment" />
         <activity android:name=".NotaActivity"/>
     </application>
 

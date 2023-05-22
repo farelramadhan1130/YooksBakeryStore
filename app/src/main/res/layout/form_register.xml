@@ -42,7 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nama"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:minHeight="48dp" />
 
             <!-- Alamat -->
             <EditText
@@ -51,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="Alamat"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:minHeight="48dp" />
 
             <!-- Nomor Telepon -->
             <EditText
@@ -60,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="Nomor Telepon"
-                android:inputType="phone"/>
+                android:inputType="phone"
+                android:minHeight="48dp" />
 
             <!-- Email -->
             <EditText
@@ -69,7 +72,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="Email"
-                android:inputType="textEmailAddress"/>
+                android:inputType="textEmailAddress"
+                android:minHeight="48dp" />
 
             <!-- Password -->
             <EditText
@@ -78,7 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="Password"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:minHeight="48dp" />
 
             <!-- Button Register -->
             <Button
