@@ -52,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:fontFamily="sans-serif-light"
+                    android:gravity="center"
                     android:text="Dedikasi dalam Menyajikan Roti Berkualitas"
                     android:textAlignment="center"
                     android:textColor="#000000"
@@ -74,6 +75,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:padding="18dp"
+                    android:gravity="center"
                     android:text="Yooks Bakery adalah sebuah toko roti yang berdiri pada tahun 2019 di kota kecil di pinggiran kota Jember. Toko roti ini menyediakan berbagai macam roti, kue, dan pastry yang dibuat dengan bahan-bahan berkualitas tinggi dan proses pembuatan yang teliti. Dengan konsep yang modern namun tetap hangat dan ramah, Yooks Bakery menjadi tempat yang populer untuk menikmati makanan ringan dan minuman segar."
                     android:textAlignment="viewStart"
                     android:textColor="#FFFFFF"
@@ -97,6 +99,7 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-condensed-medium"
                     android:text="VISI"
+                    android:gravity="center"
                     android:textAlignment="center"
                     android:textColor="#E35926"
                     android:textSize="14sp" />
@@ -111,6 +114,7 @@
                     android:fontFamily="sans-serif-light"
                     android:text="Menjadikan Yooks Bakery menjadi toko roti terkemuka yang dikenal sebagai sumber roti dan produk roti berkualitas dan inovatif untuk memenuhi kebutuhan pelanggan dengan pelayanan terbaik."
                     android:textAlignment="center"
+                    android:gravity="center"
                     android:textColor="#000000"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -132,6 +136,7 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-condensed-medium"
                     android:text="MISI"
+                    android:gravity="center"
                     android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
@@ -147,6 +152,7 @@
 Menggunakan bahan-bahan alami dan segar untuk menghasilkan roti yang sehat dan bergizi untuk kesehatan pelanggan,
 Menerapkan inovasi terbaru dalam pembuatan roti dan produk roti terkait untuk memberikan pengalaman belanja yang menyenangkan dan menyegarkan bagi pelanggan."
                     android:textAlignment="textStart"
+                    android:gravity="center"
                     android:textColor="#FFFFFF"
                     android:textSize="10sp" />
             </LinearLayout>
@@ -169,6 +175,7 @@ Menerapkan inovasi terbaru dalam pembuatan roti dan produk roti terkait untuk me
                     android:drawableTop="@drawable/loc"
                     android:fontFamily="sans-serif-condensed-medium"
                     android:text="LOKASI"
+                    android:gravity="center"
                     android:textAlignment="center"
                     android:textColor="#E35926"
                     android:textSize="14sp" />
@@ -184,6 +191,7 @@ Menerapkan inovasi terbaru dalam pembuatan roti dan produk roti terkait untuk me
                     android:fontFamily="sans-serif-light"
                     android:text="Jl. Melon 3 no. 5B, Krajan, Kec. Patrang, Kabupaten Jember, Jawa Timur 68111"
                     android:textAlignment="center"
+                    android:gravity="center"
                     android:textColor="#000000"
                     android:textSize="14sp" />
             </LinearLayout>
