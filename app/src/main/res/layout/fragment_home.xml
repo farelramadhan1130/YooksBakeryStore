@@ -27,7 +27,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="32dp"
-                    android:text="Hi, Akmal"
+                    android:text="Farel Ramadhan"
                     android:textColor="@color/Orange"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -38,7 +38,7 @@
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Member"
+                    android:text="User"
                     android:textColor="#6C6C6C"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="@+id/textView"
@@ -56,7 +56,7 @@
                 <EditText
                     android:id="@+id/search"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
@@ -65,6 +65,7 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:padding="8dp"
+                    android:text="Search"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -85,7 +86,8 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cardCornerRadius="10dp">
+                        app:cardCornerRadius="10dp"
+                        tools:ignore="MissingConstraints">
 
 
                         <ImageView
@@ -102,6 +104,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="30dp"
                             android:fontFamily="sans-serif-condensed-medium"
+                            android:gravity="center"
                             android:text="YOOKS BAKERY"
                             android:textAlignment="center"
                             android:textColor="#FABBA2"
@@ -115,6 +118,7 @@
                             android:layout_marginTop="50dp"
                             android:layout_marginRight="50dp"
                             android:fontFamily="sans-serif-condensed-medium"
+                            android:gravity="center"
                             android:text="Olahan Roti Untuk Segala Acara"
                             android:textAlignment="center"
                             android:textColor="#FFFFFF"
@@ -128,7 +132,7 @@
                             android:layout_marginLeft="130dp"
                             android:layout_marginTop="100dp"
                             android:layout_marginRight="130dp"
-                            android:text="SELENGKAPNYA"
+                            android:text="SELAMAT DATANG"
                             android:textAlignment="center"
                             android:textSize="5sp" />
                     </androidx.cardview.widget.CardView>
@@ -186,6 +190,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     app:cardCornerRadius="10dp"
+                                    tools:ignore="MissingConstraints"
                                     tools:layout_editor_absoluteX="8dp"
                                     tools:layout_editor_absoluteY="8dp">
 
@@ -226,6 +231,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     app:cardCornerRadius="10dp"
+                                    tools:ignore="MissingConstraints"
                                     tools:layout_editor_absoluteX="8dp"
                                     tools:layout_editor_absoluteY="8dp">
 
@@ -256,7 +262,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_margin="3dp"
                                 android:background="@drawable/bg_kategori"
-                                android:backgroundTint="#C039FB"
+                                android:backgroundTint="#FFE06F"
                                 android:padding="8dp"
                                 tools:layout_weight="1">
 
@@ -264,6 +270,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     app:cardCornerRadius="10dp"
+                                    tools:ignore="MissingConstraints"
                                     tools:layout_editor_absoluteX="8dp"
                                     tools:layout_editor_absoluteY="8dp">
 
@@ -287,7 +294,8 @@
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/img_rotisisir" />
+                                    app:layout_constraintTop_toBottomOf="@+id/img_rotisisir"
+                                    tools:ignore="NotSibling" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
@@ -295,7 +303,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_margin="3dp"
                                 android:background="@drawable/bg_kategori"
-                                android:backgroundTint="#BAFC6F"
+                                android:backgroundTint="#FE9C6F"
                                 android:padding="8dp"
                                 tools:layout_weight="1">
 
@@ -303,6 +311,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     app:cardCornerRadius="10dp"
+                                    tools:ignore="MissingConstraints"
                                     tools:layout_editor_absoluteX="8dp"
                                     tools:layout_editor_absoluteY="8dp">
 
@@ -326,7 +335,8 @@
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/img_rotiselai" />
+                                    app:layout_constraintTop_toBottomOf="@+id/img_rotiselai"
+                                    tools:ignore="NotSibling" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                         </LinearLayout>
@@ -370,252 +380,21 @@
                             android:layout_marginEnd="0dp"
                             android:orientation="vertical">
 
-                            <androidx.constraintlayout.widget.ConstraintLayout
+                            <!--                            <ListView-->
+                            <!--                                android:id="@+id/menu_roti"-->
+                            <!--                                android:layout_width="match_parent"-->
+                            <!--                                android:layout_height="wrap_content"/>-->
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/menu_roti"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="5dp"
-                                android:background="@drawable/bg_kategori"
-                                android:backgroundTint="#FCDD6F"
-                                android:padding="8dp"
-                                tools:layout_weight="1">
-
-                                <androidx.cardview.widget.CardView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:cardCornerRadius="15dp"
-                                    tools:layout_editor_absoluteX="8dp"
-                                    tools:layout_editor_absoluteY="8dp">
-
-                                    <ImageView
-                                        android:id="@+id/img_rsc"
-                                        android:layout_width="64dp"
-                                        android:layout_height="64dp"
-                                        android:src="@drawable/rotiselaicoklat" />
-                                </androidx.cardview.widget.CardView>
-
-                                <TextView
-                                    android:id="@+id/text_rsc"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:fontFamily="sans-serif-black"
-                                    android:text="Roti Selai Coklat"
-                                    android:textAlignment="center"
-                                    android:textSize="16sp"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    tools:layout_editor_absoluteX="8dp" />
-
-                                <TextView
-                                    android:id="@+id/text_des_rsc"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Burger berukuran kecil"
-                                    android:textAlignment="center"
-                                    app:layout_constraintStart_toEndOf="@+id/img_rsc"
-                                    app:layout_constraintTop_toBottomOf="@+id/text_rsc" />
-
-                                <TextView
-                                    android:id="@+id/hrgsrc2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="44dp"
-                                    android:text="Rp 8.000"
-                                    android:textAlignment="center"
-                                    app:layout_constraintStart_toEndOf="@+id/hrgsrc1"
-                                    tools:layout_editor_absoluteY="61dp" />
-
-
-                                <TextView
-                                    android:id="@+id/hrgsrc1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="92dp"
-                                    android:text="Rp 10.000"
-                                    android:textAlignment="center"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    tools:layout_editor_absoluteY="61dp" />
-
-                                <Button
-                                    android:layout_width="40dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="8dp"
-                                    android:text="+"
-                                    app:cornerRadius="90dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="5dp"
-                                android:background="@drawable/bg_kategori"
-                                android:backgroundTint="#FEDF6F"
-                                android:padding="8dp"
-                                tools:layout_weight="1">
-
-                                <androidx.cardview.widget.CardView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:cardCornerRadius="15dp">
-
-                                    <ImageView
-                                        android:id="@+id/img_rss"
-                                        android:layout_width="64dp"
-                                        android:layout_height="64dp"
-                                        android:src="@drawable/rotiselaistroberi"/>
-                                </androidx.cardview.widget.CardView>
-
-                                <TextView
-                                    android:id="@+id/text_rss"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:fontFamily="sans-serif-black"
-                                    android:text="Roti Selai Stroberi"
-                                    android:textAlignment="center"
-                                    android:textSize="16sp"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    tools:layout_editor_absoluteX="8dp" />
-
-                                <TextView
-                                    android:id="@+id/text_des_rss"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Kue dengan Lapisan Cream"
-                                    android:textAlignment="center"
-                                    app:layout_constraintStart_toEndOf="@+id/img_rss"
-                                    app:layout_constraintTop_toBottomOf="@+id/text_rss" />
-
-                                <Button
-                                    android:id="@+id/btn_rss"
-                                    android:layout_width="40dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="8dp"
-                                    android:text="+"
-                                    app:cornerRadius="90dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="5dp"
-                                android:background="@drawable/bg_kategori"
-                                android:backgroundTint="#FEDF6F"
-                                android:padding="8dp"
-                                tools:layout_weight="1">
-
-                                <androidx.cardview.widget.CardView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:cardCornerRadius="15dp">
-
-                                    <ImageView
-                                        android:id="@+id/img_donat2"
-                                        android:layout_width="64dp"
-                                        android:layout_height="64dp"
-                                        android:src="@drawable/paketdonatkentang1" />
-                                </androidx.cardview.widget.CardView>
-
-                                <TextView
-                                    android:id="@+id/text_donat2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:fontFamily="sans-serif-black"
-                                    android:text="Donat"
-                                    android:textAlignment="center"
-                                    android:textSize="16sp"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    tools:layout_editor_absoluteX="8dp" />
-
-                                <TextView
-                                    android:id="@+id/text_des_donat2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Donat taburan meses dan Keju"
-                                    android:textAlignment="center"
-                                    app:layout_constraintEnd_toEndOf="@+id/text_donat2"
-                                    app:layout_constraintStart_toStartOf="@+id/text_donat2"
-                                    app:layout_constraintTop_toBottomOf="@+id/text_donat2" />
-
-                                <Button
-                                    android:id="@+id/btn_donat2"
-                                    android:layout_width="40dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="8dp"
-                                    android:text="+"
-                                    app:cornerRadius="90dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="5dp"
-                                android:background="@drawable/bg_kategori"
-                                android:backgroundTint="#FEDF6F"
-                                android:padding="8dp"
-                                tools:layout_weight="1">
-
-                                <androidx.cardview.widget.CardView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:cardCornerRadius="10dp"
-                                    tools:layout_editor_absoluteX="8dp"
-                                    tools:layout_editor_absoluteY="8dp">
-
-                                    <ImageView
-                                        android:id="@+id/img_rid"
-                                        android:layout_width="64dp"
-                                        android:layout_height="64dp"
-                                        android:src="@drawable/rotiisidaging" />
-                                </androidx.cardview.widget.CardView>
-
-                                <TextView
-                                    android:id="@+id/text_rid"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:fontFamily="sans-serif-black"
-                                    android:text="Roti Isi Daging"
-                                    android:textAlignment="center"
-                                    android:textSize="16sp"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    tools:layout_editor_absoluteX="8dp" />
-
-                                <TextView
-                                    android:id="@+id/text_des_rid"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Roti dengan Isian Daging"
-                                    android:textAlignment="center"
-                                    app:layout_constraintEnd_toEndOf="@+id/text_rid"
-                                    app:layout_constraintStart_toStartOf="@+id/text_rid"
-                                    app:layout_constraintTop_toBottomOf="@+id/text_rid" />
-
-                                <Button
-                                    android:id="@+id/btn_rid"
-                                    android:layout_width="40dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="8dp"
-                                    android:text="+"
-                                    app:cornerRadius="90dp"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
+                                android:orientation="vertical"
+                                tools:listitem="@layout/menu_roti" />
 
                         </LinearLayout>
 
                     </RelativeLayout>
-
 
                 </ScrollView>
 

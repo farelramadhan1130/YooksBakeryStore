@@ -34,11 +34,12 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="5dp"
                 android:padding="8dp"
-                android:text="Chart"
+                android:text="CHART"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="25dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:gravity="center"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/card_chart"
