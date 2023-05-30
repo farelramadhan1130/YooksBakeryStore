@@ -24,6 +24,7 @@
                     android:background="#FEDF6F">
 
                     <ImageView
+                        android:id="@+id/foto_roti"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:src="@drawable/rotiselai"
@@ -39,6 +40,7 @@
                         android:paddingStart="8dp">
 
                         <TextView
+                            android:id="@+id/nama_roti"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Roti Lutut"
@@ -46,6 +48,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/deskripsi_roti"
                             android:layout_width="match_parent"
                             android:layout_height="33dp"
                             android:text="Merupakan Roti dengan lutut yang masih fresh dari open." />
@@ -63,6 +66,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/harga_roti"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Rp 5.000"
@@ -84,6 +88,7 @@
                                 android:textColor="@color/Orange" />
 
                             <TextView
+                                android:id="@+id/diskon_roti"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Rp 4.000"

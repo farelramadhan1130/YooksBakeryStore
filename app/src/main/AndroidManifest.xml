@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-<<<<<<< HEAD
-=======
-    <uses-permission android:name="android.permission.INTERNET" />
->>>>>>> f4ca0ceb50d05f7cb465d00f0bdad5c0932a8688
+    <uses-permission android:name="android.permission.INTERNET" />\
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
