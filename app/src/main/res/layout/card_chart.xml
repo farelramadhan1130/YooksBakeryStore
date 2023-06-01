@@ -25,6 +25,7 @@
                 app:cardCornerRadius="15dp">
 
                 <ImageView
+                    android:id="@+id/foto_produk_keranjang"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:src="@drawable/rotiselai"/>
@@ -36,7 +37,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/name"
+                    android:id="@+id/nama_produk_keranjang"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
@@ -46,21 +47,13 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/info"
+                    android:id="@+id/harga_produk_keranjang"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="ini terbuat dari bla bla bala"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/harga"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:layout_marginLeft="8dp"
                     android:text="Rp22.222"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -69,7 +62,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/plus"
+                        android:id="@+id/kurang_button_keranjang"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:backgroundTint="@color/white"
@@ -80,7 +73,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/text_card"
+                        android:id="@+id/jumlah_roti_keranjang"
                         android:layout_width="27dp"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
@@ -89,7 +82,7 @@
                         android:textColor="@color/black" />
 
                     <Button
-                        android:id="@+id/minus"
+                        android:id="@+id/tambah_button_keranjang"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:backgroundTint="@color/white"

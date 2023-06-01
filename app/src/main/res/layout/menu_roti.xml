@@ -59,20 +59,25 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:id="@+id/diskon_roti"
+                                android:layout_width="104dp"
                                 android:layout_height="wrap_content"
-                                android:text="Harga  : "
-                                android:textColor="@color/black"
-                                android:textStyle="bold" />
+                                android:text="Rp 6.000"
+                                android:textColor="@color/merah"
+                                android:textStrikeThru="true"
+                                android:textStyle="bold"
+                                android:gravity="center"/>
 
                             <TextView
                                 android:id="@+id/harga_roti"
-                                android:layout_width="wrap_content"
+                                android:layout_width="104dp"
                                 android:layout_height="wrap_content"
+                                android:paintFlags="strikeThru|antiAlias"
                                 android:text="Rp 5.000"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:paintFlags="strikeThru|antiAlias" />
+                                android:gravity="center" />
+
 
                         </LinearLayout>
 
@@ -84,27 +89,30 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Diskon : "
-                                android:textColor="@color/Orange" />
+                                android:text="Stock : "
+                                android:textColor="@color/black" />
 
                             <TextView
-                                android:id="@+id/diskon_roti"
+                                android:id="@+id/stock"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rp 4.000"
-                                android:textColor="@color/Orange"
-                                android:paintFlags="strikeThru" />
+                                android:text="40"
+                                android:textColor="@color/black"
+                                android:paintFlags="strikeThru"
+                                android:textStyle="bold"/>
 
                         </LinearLayout>
 
                     </LinearLayout>
 
                     <Button
+                        android:id="@+id/keranjang"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:background="@drawable/baseline_add_circle_24"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="8dp"/>
+                        android:layout_marginStart="8dp"
+                        android:onClick="tambahKeKeranjang"/>
 
                 </LinearLayout>
 

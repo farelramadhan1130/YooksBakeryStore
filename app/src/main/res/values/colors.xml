@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="Orange">#e85820</color>
     <color name="OrangeService">#CB623D</color>
+    <color name="merah">#ff0000</color>
 </resources>
