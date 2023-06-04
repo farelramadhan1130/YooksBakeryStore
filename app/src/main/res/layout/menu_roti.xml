@@ -65,14 +65,12 @@
                                 android:gravity="left"
                                 android:text="Rp 6.000"
                                 android:textColor="@color/merah"
-                                android:textStrikeThru="true"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/harga_roti"
                                 android:layout_width="104dp"
                                 android:layout_height="wrap_content"
-                                android:paintFlags="strikeThru|antiAlias"
                                 android:text="Rp 5.000"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
@@ -98,7 +96,6 @@
                                 android:layout_height="wrap_content"
                                 android:text="40"
                                 android:textColor="@color/black"
-                                android:paintFlags="strikeThru"
                                 android:textStyle="bold"/>
 
                         </LinearLayout>

@@ -10,8 +10,7 @@ public class Product {
     private String foto_produk;
     private int jumlah; // Tambahkan atribut jumlah
 
-    public Product(
-            int id_produk, int harga_jual, int harga_coret, int stok, String nama, String deskripsi_produk, String foto_produk) {
+    public Product(int id_produk, int harga_jual, int harga_coret, int stok, String nama, String deskripsi_produk, String foto_produk) {
         this.id_produk = id_produk;
         this.nama = nama;
         this.deskripsi_produk = deskripsi_produk;
@@ -19,10 +18,6 @@ public class Product {
         this.harga_coret = harga_coret;
         this.stok = stok;
         this.foto_produk = foto_produk;
-        this.jumlah = 0; // Inisialisasi jumlah menjadi 0
-    }
-
-    public Product(int id_produk, String nama, int harga_jual) {
     }
 
     public int getId_produk() {
@@ -49,27 +44,8 @@ public class Product {
         return harga_coret;
     }
 
-    public int getStok() { return stok; }
-
-    // Tambahkan getter dan setter untuk atribut jumlah
-    public int getJumlah() {
-        return jumlah;
-    }
-
-    public void setJumlah(int jumlah) {
-        this.jumlah = jumlah;
-    }
-
-    // Tambahkan metode untuk menambah jumlah
-    public void tambahJumlah() {
-        jumlah++;
-    }
-
-    // Tambahkan metode untuk mengurangi jumlah
-    public void kurangJumlah() {
-        if (jumlah > 0) {
-            jumlah--;
-        }
+    public int getStok() {
+        return stok;
     }
 
     // Metode getter lainnya...
