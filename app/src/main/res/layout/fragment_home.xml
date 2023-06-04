@@ -380,7 +380,7 @@
                             android:layout_marginEnd="0dp"
                             android:orientation="vertical">
 
-                            <ListView
+                            <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/menu_roti"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
