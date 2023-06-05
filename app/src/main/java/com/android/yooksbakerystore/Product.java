@@ -18,7 +18,12 @@ public class Product {
         this.harga_coret = harga_coret;
         this.stok = stok;
         this.foto_produk = foto_produk;
+        this.jumlah = 1; // Set jumlah awal ke 1
     }
+
+    public int getJumlah() { return jumlah; }
+
+    public void setJumlah(int jumlah) {this.jumlah = jumlah;}
 
     public int getId_produk() {
         return id_produk;
@@ -36,9 +41,7 @@ public class Product {
         return foto_produk;
     }
 
-    public int getHarga_jual() {
-        return harga_jual;
-    }
+    public int getHarga_jual() { return harga_jual; }
 
     public int getHarga_coret() {
         return harga_coret;

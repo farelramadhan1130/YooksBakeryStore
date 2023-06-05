@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import android.graphics.Paint;
 
 import com.bumptech.glide.Glide;
 
@@ -18,6 +19,7 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private Context context;
     private List<Product> productList;
+    private String baseUrl = "http://192.168.1.6:8000/asset/image/image-admin/produk/"; // URL Tempat Penyimpanan Foto Produk
 
     public ProductAdapter(Context context, List<Product> productList) {
         this.context = context;
@@ -40,10 +42,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.deskripsiRotiTextView.setText(product.getDeskripsi_produk());
         holder.hargaRotiTextView.setText(String.valueOf(product.getHarga_jual()));
         holder.diskonRotiTextView.setText(String.valueOf(product.getHarga_coret()));
+        holder.diskonRotiTextView.setPaintFlags(holder.diskonRotiTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.stockRotiTextView.setText(String.valueOf(product.getStok()));
 
+        String imageUrl = baseUrl + product.getFoto_produk(); // Menggabungkan base URL dengan path foto produk
+
         Glide.with(context)
-                .load(product.getFoto_produk())
+                .load(imageUrl)
                 .into(holder.fotoRotiImageView);
 
         // Aksi saat tombol "Keranjang" diklik
@@ -85,7 +90,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             stockRotiTextView = itemView.findViewById(R.id.stock);
             deskripsiRotiTextView = itemView.findViewById(R.id.deskripsi_roti);
             keranjangButton = itemView.findViewById(R.id.keranjang);
-
         }
     }
 }

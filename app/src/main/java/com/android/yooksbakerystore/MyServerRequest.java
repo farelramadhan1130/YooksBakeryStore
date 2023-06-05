@@ -2,6 +2,7 @@ package com.android.yooksbakerystore;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -22,15 +23,17 @@ public class MyServerRequest {
     private static final String TAG = "MyServerRequest";
     private final Context context;
     private final RequestQueue requestQueue;
+    private SharedPreferences sharedPreferences;
 
     public MyServerRequest(Context context) {
         this.context = context;
         this.requestQueue = Volley.newRequestQueue(context);
+        this.sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
     }
 
     public void login(String email, String password, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
         // URL endpoint untuk login
-        String url = "http://192.168.1.3:8000/api/login";
+        String url = "http://192.168.1.6:8000/api/login";
 
         // membuat objek RequestQueue untuk mengirim request ke server
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -42,9 +45,13 @@ public class MyServerRequest {
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
-                            boolean error = jsonResponse.getBoolean("success");
-                            if (error) {
+                            boolean success = jsonResponse.getBoolean("success");
+                            if (success) {
                                 // response dari server jika login berhasil
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("isLoggedIn", true);
+                                editor.apply();
+
                                 Intent intent = new Intent(context, SplashScreenActivity.class);
                                 context.startActivity(intent);
                             } else {
@@ -75,5 +82,6 @@ public class MyServerRequest {
         // menambahkan request ke dalam queue
         queue.add(stringRequest);
     }
+
 
 }

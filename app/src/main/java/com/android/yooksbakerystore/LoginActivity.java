@@ -38,39 +38,49 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btn_login);
         textRegister = findViewById(R.id.text_register);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Ambil Nilai dari EditText email dan password
-                String email_user = etUsername.getText().toString();
-                String password_user = etPassword.getText().toString();
+        // Cek apakah pengguna sudah login sebelumnya
+        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+        if (isLoggedIn) {
+            // Pengguna sudah login sebelumnya, arahkan ke halaman utama
+            Intent intent = new Intent(LoginActivity.this, SplashScreenActivity.class);
+            startActivity(intent);
+            finish(); // Tutup activity ini agar pengguna tidak dapat kembali ke halaman login
+        } else {
+            // Pengguna belum login, tetapkan onClickListener ke btnLogin
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Ambil Nilai dari EditText email dan password
+                    String email_user = etUsername.getText().toString();
+                    String password_user = etPassword.getText().toString();
 
-                // Lakukan request ke server dengan menggunakan Volley
-                MyServerRequest serverRequest = new MyServerRequest(LoginActivity.this);
-                serverRequest.login(email_user, password_user, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Respon berhasil diterima, lakukan aksi yang diperlukan
-                        Toast.makeText(LoginActivity.this, "Login berhasil", Toast.LENGTH_SHORT).show();
+                    // Lakukan request ke server dengan menggunakan Volley
+                    MyServerRequest serverRequest = new MyServerRequest(LoginActivity.this);
+                    serverRequest.login(email_user, password_user, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Respon berhasil diterima, lakukan aksi yang diperlukan
+                            Toast.makeText(LoginActivity.this, "Login berhasil", Toast.LENGTH_SHORT).show();
 
-                        // Set nilai shared preferences isLoggedIn menjadi true
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putBoolean("isLoggedIn", true);
-                        editor.apply();
+                            // Set nilai shared preferences isLoggedIn menjadi true
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("isLoggedIn", true);
+                            editor.apply();
 
-                        // Arahkan ke halaman utama (HomeActivity)
-                        Intent intent = new Intent(LoginActivity.this, SplashScreenActivity.class);
-                        startActivity(intent);
-                        finish(); // Tutup activity ini agar pengguna tidak dapat kembali ke halaman login
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(LoginActivity.this, "Terjadi Kesalahan" + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+                            // Arahkan ke halaman utama (HomeActivity)
+                            Intent intent = new Intent(LoginActivity.this, SplashScreenActivity.class);
+                            startActivity(intent);
+                            finish(); // Tutup activity ini agar pengguna tidak dapat kembali ke halaman login
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(LoginActivity.this, "Terjadi Kesalahan" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        }
 
         textRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,5 +89,13 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        super.onDestroy();
     }
 }
