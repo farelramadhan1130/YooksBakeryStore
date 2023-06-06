@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import android.graphics.Paint;
 
 import com.bumptech.glide.Glide;
 
@@ -18,12 +17,18 @@ import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private Context context;
-    private List<Product> productList;
+    private static List<Product> productList;
     private String baseUrl = "http://192.168.1.6:8000/asset/image/image-admin/produk/"; // URL Tempat Penyimpanan Foto Produk
+    private AddProductToChartListener addProductToChartListener; // Tambahkan variabel ini
 
     public ProductAdapter(Context context, List<Product> productList) {
         this.context = context;
         this.productList = productList;
+    }
+
+    // Metode setter untuk AddProductToChartListener
+    public void setAddProductToChartListener(AddProductToChartListener listener) {
+        addProductToChartListener = listener;
     }
 
     @NonNull
@@ -42,7 +47,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.deskripsiRotiTextView.setText(product.getDeskripsi_produk());
         holder.hargaRotiTextView.setText(String.valueOf(product.getHarga_jual()));
         holder.diskonRotiTextView.setText(String.valueOf(product.getHarga_coret()));
-        holder.diskonRotiTextView.setPaintFlags(holder.diskonRotiTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.stockRotiTextView.setText(String.valueOf(product.getStok()));
 
         String imageUrl = baseUrl + product.getFoto_produk(); // Menggabungkan base URL dengan path foto produk
@@ -61,6 +65,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 // Implementasikan logika tambahan sesuai kebutuhan Anda
                 int idProduk = holder.idProduk;
                 // Implementasikan aksi tambahan sesuai kebutuhan Anda
+
+                // Tambahkan produk ke card_chart.xml
+                if (addProductToChartListener != null) {
+                    // Dapatkan objek Product berdasarkan ID produk yang diklik
+                    Product addedProduct = getProductById(idProduk);
+                    if (addedProduct != null) {
+                        // Panggil metode onAddProductToChart di AddProductToChartListener
+                        addProductToChartListener.onAddProductToChart(addedProduct);
+                    }
+                }
             }
         });
     }
@@ -69,6 +83,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public int getItemCount() {
         return productList.size();
     }
+
+    // ...
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView fotoRotiImageView;
@@ -79,6 +95,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         TextView deskripsiRotiTextView;
         Button keranjangButton;
         int idProduk;
+        AddProductToChartListener addProductToChartListener; // Jadikan variabel ini static
 
         ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,6 +107,31 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             stockRotiTextView = itemView.findViewById(R.id.stock);
             deskripsiRotiTextView = itemView.findViewById(R.id.deskripsi_roti);
             keranjangButton = itemView.findViewById(R.id.keranjang);
+
+            keranjangButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (addProductToChartListener != null) {
+                        // Dapatkan objek Product berdasarkan ID produk yang diklik
+                        Product addedProduct = getProductById(idProduk);
+                        if (addedProduct != null) {
+                            // Panggil metode onAddProductToChart di AddProductToChartListener
+                            addProductToChartListener.onAddProductToChart(addedProduct);
+                        }
+                    }
+                }
+            });
         }
     }
+
+    // Metode untuk mencari produk berdasarkan ID
+    private static Product getProductById(int idProduk) {
+        for (Product product : productList) {
+            if (product.getId_produk() == idProduk) {
+                return product;
+            }
+        }
+        return null;
+    }
 }
+

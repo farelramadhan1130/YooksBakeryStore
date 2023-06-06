@@ -31,7 +31,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements AddProductToChartListener {
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
     private List<Product> productList;
@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment {
 
         productList = new ArrayList<>();
         productAdapter = new ProductAdapter(getActivity(), productList);
+        productAdapter.setAddProductToChartListener(this); // Set listener ke adapter
         recyclerView.setAdapter(productAdapter);
 
         fetchProducts();
@@ -66,8 +67,6 @@ public class HomeFragment extends Fragment {
                         }
 
                         try {
-//                            ArrayList<Product> productList = new ArrayList<>();
-
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject dataObject = data.getJSONObject(i);
 
@@ -96,19 +95,28 @@ public class HomeFragment extends Fragment {
                             errorMessage += ": " + error.getMessage();
                         }
                         if (getActivity() != null) {
-                            Log.e(TAG, "onErrorResponse: "+errorMessage);
+                            Log.e(TAG, "onErrorResponse: " + errorMessage);
                             Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-            VolleySingleton volleySingleton = VolleySingleton.getInstance(getActivity());
-            if (volleySingleton != null) {
-                volleySingleton.addToRequestQueue(request);
+        VolleySingleton volleySingleton = VolleySingleton.getInstance(getActivity());
+        if (volleySingleton != null) {
+            volleySingleton.addToRequestQueue(request);
         }
     }
 
     // Tambahkan metode ini untuk mengambil URL gambar dan memuatnya ke ImageView menggunakan Picasso
     private void loadProductImage(String imageUrl, ImageView imageView) {
         Picasso.get().load(imageUrl).into(imageView);
+    }
+
+    @Override
+    public void onAddProductToChart(Product product) {
+        // Panggil metode onAddProductToChart di MainActivity dengan meneruskannya ke instance MainActivity yang ada
+        if (getActivity() instanceof MainActivity) {
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.addProductToChart(product);
+        }
     }
 }

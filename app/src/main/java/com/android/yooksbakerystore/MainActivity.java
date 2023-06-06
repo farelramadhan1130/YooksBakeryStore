@@ -17,6 +17,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -31,13 +32,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
+    List<Product> productList = new ArrayList<>();
     FloatingActionButton fab;
     DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
     private Button btn_checkout;
-
+    private LinearLayout cardChartLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,33 +91,24 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Dialog dialog = new Dialog(view.getContext());
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.bottomsheetlayout);
-                dialog.show();
-                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                dialog.getWindow().setGravity(Gravity.BOTTOM);
-
+                showBottomDialog();
             }
         });
     }
-    //Outside onCreate
 
-    private  void replaceFragment(Fragment fragment) {
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = FragmentManager.beginTransaction();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
 
     private void showBottomDialog() {
-
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheetlayout);
+
+        cardChartLayout = dialog.findViewById(R.id.card_chart);
 
         LinearLayout videoLayout = dialog.findViewById(R.id.bottom_home);
         LinearLayout shortsLayout = dialog.findViewById(R.id.bottom_about);
@@ -122,30 +118,25 @@ public class MainActivity extends AppCompatActivity {
         videoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Toast.makeText(MainActivity.this,"Upload a Video is clicked",Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(MainActivity.this, "Upload a Video is clicked", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         shortsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialog.dismiss();
-                Toast.makeText(MainActivity.this,"Create a short is Clicked",Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(MainActivity.this, "Create a short is Clicked", Toast.LENGTH_SHORT).show();
+                // Add your code here for handling the click event
             }
         });
 
         liveLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialog.dismiss();
-                Toast.makeText(MainActivity.this,"Go live is Clicked",Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(MainActivity.this, "Go live is Clicked", Toast.LENGTH_SHORT).show();
+                // Add your code here for handling the click event
             }
         });
 
@@ -167,11 +158,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Button Add to Chart di ProductAdapter
+        ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList);
+        productAdapter.setAddProductToChartListener(new AddProductToChartListener() {
+            @Override
+            public void onAddProductToChart(Product product) {
+                // Tambahkan produk ke keranjang
+                addProductToChart(product);
+            }
+        });
+
+
+
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
 
+    void addProductToChart(Product product) {
+        // Create a new card view for the added product
+        View cardView = LayoutInflater.from(MainActivity.this).inflate(R.layout.card_chart, cardChartLayout, false);
+
+        // Set the product details in the card view
+        ImageView productImage = cardView.findViewById(R.id.foto_produk_keranjang);
+        TextView productName = cardView.findViewById(R.id.nama_produk_keranjang);
+        TextView productPrice = cardView.findViewById(R.id.harga_produk_keranjang );
+
+        productName.setText(product.getNama());
+        productPrice.setText(String.valueOf(product.getHarga_jual()));
+
+        // You can set the product image using Glide or any other image loading library
+        // Glide.with(MainActivity.this).load(product.getImageUrl()).into(productImage);
+
+        // Add the card view to the chart layout
+        cardChartLayout.addView(cardView);
     }
 }
