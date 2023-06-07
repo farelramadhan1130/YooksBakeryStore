@@ -35,7 +35,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddProductToChartListener {
 
     List<Product> productList = new ArrayList<>();
     FloatingActionButton fab;
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        cardChartLayout = findViewById(R.id.cardChartLayout); // Inisialisasi cardChartLayout
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
@@ -91,6 +92,14 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final Dialog dialog = new Dialog(view.getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.bottomsheetlayout);
+                dialog.show();
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                dialog.getWindow().setGravity(Gravity.BOTTOM);
                 showBottomDialog();
             }
         });
@@ -98,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
@@ -108,8 +118,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheetlayout);
 
-        cardChartLayout = dialog.findViewById(R.id.card_chart);
-
         LinearLayout videoLayout = dialog.findViewById(R.id.bottom_home);
         LinearLayout shortsLayout = dialog.findViewById(R.id.bottom_about);
         LinearLayout liveLayout = dialog.findViewById(R.id.bottom_service);
@@ -118,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         videoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Upload a Video is clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,"Upload a Video is clicked",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -126,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Toast.makeText(MainActivity.this, "Create a short is Clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,"Create a short is Clicked",Toast.LENGTH_SHORT).show();
                 // Add your code here for handling the click event
             }
         });
@@ -135,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Toast.makeText(MainActivity.this, "Go live is Clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,"Go live is Clicked",Toast.LENGTH_SHORT).show();
                 // Add your code here for handling the click event
             }
         });
@@ -160,21 +168,19 @@ public class MainActivity extends AppCompatActivity {
 
         // Button Add to Chart di ProductAdapter
         ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList);
-        productAdapter.setAddProductToChartListener(new AddProductToChartListener() {
-            @Override
-            public void onAddProductToChart(Product product) {
-                // Tambahkan produk ke keranjang
-                addProductToChart(product);
-            }
-        });
-
-
+        productAdapter.setAddProductToChartListener(MainActivity.this);
 
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    @Override
+    public void onAddProductToChart(Product product) {
+        // Tambahkan produk ke keranjang
+        addProductToChart(product);
     }
 
     void addProductToChart(Product product) {
@@ -184,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         // Set the product details in the card view
         ImageView productImage = cardView.findViewById(R.id.foto_produk_keranjang);
         TextView productName = cardView.findViewById(R.id.nama_produk_keranjang);
-        TextView productPrice = cardView.findViewById(R.id.harga_produk_keranjang );
+        TextView productPrice = cardView.findViewById(R.id.harga_produk_keranjang);
 
         productName.setText(product.getNama());
         productPrice.setText(String.valueOf(product.getHarga_jual()));
@@ -196,3 +202,4 @@ public class MainActivity extends AppCompatActivity {
         cardChartLayout.addView(cardView);
     }
 }
+
