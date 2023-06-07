@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.graphics.Paint;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,12 +19,13 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private Context context;
     private static List<Product> productList;
-    private String baseUrl = "http://192.168.102.220:8000/asset/image/image-admin/produk/"; // URL Tempat Penyimpanan Foto Produk
+    private String baseUrl = "http://192.168.60.220:8000/asset/image/image-admin/produk/"; // URL Tempat Penyimpanan Foto Produk
     private AddProductToChartListener addProductToChartListener; // Tambahkan variabel ini
 
-    public ProductAdapter(Context context, List<Product> productList) {
+    public ProductAdapter(Context context, List<Product> productList, AddProductToChartListener listener) {
         this.context = context;
         this.productList = productList;
+        this.addProductToChartListener = listener;
     }
 
     // Metode setter untuk AddProductToChartListener
@@ -46,8 +48,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.namaRotiTextView.setText(product.getNama());
         holder.deskripsiRotiTextView.setText(product.getDeskripsi_produk());
         holder.hargaRotiTextView.setText(String.valueOf(product.getHarga_jual()));
-        holder.diskonRotiTextView.setText(String.valueOf(product.getHarga_coret()));
         holder.stockRotiTextView.setText(String.valueOf(product.getStok()));
+        holder.diskonRotiTextView.setText(String.valueOf(product.getHarga_coret()));
+        holder.diskonRotiTextView.setPaintFlags(holder.diskonRotiTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         String imageUrl = baseUrl + product.getFoto_produk(); // Menggabungkan base URL dengan path foto produk
 

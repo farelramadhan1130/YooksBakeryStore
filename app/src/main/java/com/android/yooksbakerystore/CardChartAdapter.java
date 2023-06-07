@@ -18,16 +18,18 @@ import java.util.List;
 public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.ViewHolder> {
     private List<Product> productList;
     private Context context;
+    private UpdateTotalHargaListener updateTotalHargaListener;
 
-    public CardChartAdapter(List<Product> productList, Context context) {
+    public CardChartAdapter(List<Product> productList, Context context, UpdateTotalHargaListener updateTotalHargaListener) {
         this.productList = productList;
         this.context = context;
+        this.updateTotalHargaListener = updateTotalHargaListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_chart, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bottomsheetlayout, parent, false);
         return new ViewHolder(view);
     }
 
@@ -38,37 +40,31 @@ public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.View
         holder.namaProduk.setText(product.getNama());
         holder.hargaProduk.setText("Rp " + product.getHarga_jual());
 
-        String imageUrl = "http://192.168.1.6:8000/asset/image/image-admin/produk/" + product.getFoto_produk();
+        String imageUrl = "http://192.168.60.220:8000/asset/image/image-admin/produk/" + product.getFoto_produk();
         Glide.with(context)
                 .load(imageUrl)
                 .into(holder.fotoProduk);
 
-        // Aksi saat tombol "+" diklik
         holder.tambahButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Tambah jumlah
                 int jumlah = product.getJumlah();
                 jumlah++;
                 product.setJumlah(jumlah);
 
-                // Update tampilan jumlah dan total harga
                 holder.jumlahRoti.setText(String.valueOf(jumlah));
                 updateTotalHarga();
             }
         });
 
-        // Aksi saat tombol "-" diklik
         holder.kurangButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Kurangi jumlah jika tidak kurang dari 1
                 int jumlah = product.getJumlah();
                 if (jumlah > 1) {
                     jumlah--;
                     product.setJumlah(jumlah);
 
-                    // Update tampilan jumlah dan total harga
                     holder.jumlahRoti.setText(String.valueOf(jumlah));
                     updateTotalHarga();
                 }
@@ -97,17 +93,20 @@ public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.View
         }
     }
 
+    public interface UpdateTotalHargaListener {
+        void onUpdateTotalHarga();
+    }
+
     private void updateTotalHarga() {
         int totalHarga = 0;
         for (Product product : productList) {
             totalHarga += product.getHarga_jual() * product.getJumlah();
         }
-        // Anda perlu mengirimkan totalHarga ke tampilan Anda
-        // Misalnya, jika Anda memiliki TextView dengan id textTotalValue
-        // maka Anda dapat mengaksesnya dan mengubah nilainya seperti berikut:
-        // TextView textTotalValue = findViewById(R.id.text_total_value);
-        // textTotalValue.setText("Rp " + totalHarga);
-        // Jika Anda menggunakan AlertDialog, Toast, atau tampilan lain,
-        // pastikan Anda menyesuaikan implementasinya dengan tampilan yang digunakan di aplikasi Anda.
+
+        // Panggil metode onUpdateTotalHarga pada updateTotalHargaListener
+        if (updateTotalHargaListener != null) {
+            updateTotalHargaListener.onUpdateTotalHarga();
+        }
     }
 }
+

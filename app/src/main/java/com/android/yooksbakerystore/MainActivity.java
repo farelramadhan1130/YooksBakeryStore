@@ -6,7 +6,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -23,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,14 +32,13 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AddProductToChartListener {
+public class MainActivity extends AppCompatActivity implements AddProductToChartListener, CardChartAdapter.UpdateTotalHargaListener {
 
     List<Product> productList = new ArrayList<>();
     FloatingActionButton fab;
     DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
     private Button btn_checkout;
-    private LinearLayout cardChartLayout;
     private RecyclerView recyclerView;
     private CardChartAdapter cardChartAdapter;
     private TextView textTotalValue;
@@ -53,13 +53,13 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         Toolbar toolbar = findViewById(R.id.toolbar);
-//        cardChartLayout = findViewById(R.id.cardChartLayout); // Inisialisasi cardChartLayout
 
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         View bottomsheetlayout = inflater.inflate(R.layout.bottomsheetlayout, null);
 
         recyclerView = bottomsheetlayout.findViewById(R.id.card_chart);
-        textTotalValue = bottomsheetlayout.findViewById(R.id.text_total_value); // Inisialisasi TextView untuk total harga
+        textTotalValue = bottomsheetlayout.findViewById(R.id.text_total_value);
+
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
@@ -100,10 +100,6 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                 showBottomDialog();
             }
         });
-
-        // Buat objek CardChartAdapter dan set pada RecyclerView
-        cardChartAdapter = new CardChartAdapter(productList, MainActivity.this);
-        recyclerView.setAdapter(cardChartAdapter);
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -118,6 +114,17 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheetlayout);
 
+        // Mengambil referensi RecyclerView di dalam bottomsheetlayout
+        RecyclerView recyclerView = dialog.findViewById(R.id.card_chart);
+        textTotalValue = dialog.findViewById(R.id.text_total_value);
+
+        // Tambahkan LayoutManager
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+        // Buat objek CardChartAdapter dan set pada RecyclerView
+        cardChartAdapter = new CardChartAdapter(productList, MainActivity.this, this);
+        recyclerView.setAdapter(cardChartAdapter);
+
         // Tombol Checkout di Bottom Sheet Layout
         btn_checkout = dialog.findViewById(R.id.btn_checkout);
         btn_checkout.setOnClickListener(new View.OnClickListener() {
@@ -130,11 +137,11 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         });
 
         // Button Add to Chart di ProductAdapter
-        ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList);
+        ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList, this);
         productAdapter.setAddProductToChartListener(MainActivity.this);
 
         dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
@@ -146,12 +153,18 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         addProductToChart(product);
     }
 
-    void addProductToChart(Product product) {
+    private void addProductToChart(Product product) {
         productList.add(product); // Tambahkan produk ke list
 
         // Update adapter
         cardChartAdapter.notifyDataSetChanged();
 
+        // Hitung total harga
+        updateTotalHarga();
+    }
+
+    @Override
+    public void onUpdateTotalHarga() {
         // Hitung total harga
         updateTotalHarga();
     }
@@ -165,4 +178,3 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         textTotalValue.setText("Rp " + totalHarga);
     }
 }
-

@@ -35,7 +35,12 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
     private List<Product> productList;
-    private static final String API_URL = "http://192.168.102.220:8000/api/tampilmenu"; // Ubah URL sesuai dengan endpoint tampilmenu di server Anda
+    private static final String API_URL = "http://192.168.60.220:8000/api/tampilmenu"; // Ubah URL sesuai dengan endpoint tampilmenu di server Anda
+
+    // Interface untuk menangani callback saat produk ditambahkan ke keranjang
+    public interface AddProductToChartListener {
+        void onAddProductToChart(Product product);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,7 +50,7 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         productList = new ArrayList<>();
-        productAdapter = new ProductAdapter(getActivity(), productList);
+        productAdapter = new ProductAdapter(getActivity(), productList, this );
         productAdapter.setAddProductToChartListener(this); // Set listener ke adapter
         recyclerView.setAdapter(productAdapter);
 
@@ -114,10 +119,11 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
     @Override
     public void onAddProductToChart(Product product) {
         // Panggil metode onAddProductToChart di MainActivity dengan meneruskannya ke instance MainActivity yang ada
-        if (getActivity() instanceof MainActivity) {
-            MainActivity mainActivity = (MainActivity) getActivity();
-            mainActivity.addProductToChart(product);
+        if (getActivity() instanceof AddProductToChartListener) {
+            AddProductToChartListener listener = (AddProductToChartListener) getActivity();
+            listener.onAddProductToChart(product);
             Log.e(TAG, "onAddProductToChart: Tetstt");
         }
     }
+
 }

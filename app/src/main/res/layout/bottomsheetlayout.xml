@@ -41,17 +41,17 @@
                 android:textStyle="bold"
                 android:gravity="center"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/card_chart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/card_chart" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="16dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/card_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/card_chart"/>
 
                 <!-- Input Text: Total -->
                 <LinearLayout
@@ -120,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="6dp"
                     android:orientation="horizontal">
 
                     <Button
