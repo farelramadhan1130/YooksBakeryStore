@@ -117,6 +117,7 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
         if (getActivity() instanceof MainActivity) {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.addProductToChart(product);
+            Log.e(TAG, "onAddProductToChart: Tetstt");
         }
     }
 }
