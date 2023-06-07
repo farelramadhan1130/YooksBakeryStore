@@ -6,26 +6,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.StrikethroughSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -43,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
     BottomNavigationView bottomNavigationView;
     private Button btn_checkout;
     private LinearLayout cardChartLayout;
+    private RecyclerView recyclerView;
+    private CardChartAdapter cardChartAdapter;
+    private TextView textTotalValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,13 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        cardChartLayout = findViewById(R.id.cardChartLayout); // Inisialisasi cardChartLayout
+//        cardChartLayout = findViewById(R.id.cardChartLayout); // Inisialisasi cardChartLayout
+
+        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+        View bottomsheetlayout = inflater.inflate(R.layout.bottomsheetlayout, null);
+
+        recyclerView = bottomsheetlayout.findViewById(R.id.card_chart);
+        textTotalValue = bottomsheetlayout.findViewById(R.id.text_total_value); // Inisialisasi TextView untuk total harga
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
@@ -92,22 +97,17 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Dialog dialog = new Dialog(view.getContext());
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.bottomsheetlayout);
-                dialog.show();
-                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                dialog.getWindow().setGravity(Gravity.BOTTOM);
                 showBottomDialog();
             }
         });
+
+        // Buat objek CardChartAdapter dan set pada RecyclerView
+        cardChartAdapter = new CardChartAdapter(productList, MainActivity.this);
+        recyclerView.setAdapter(cardChartAdapter);
     }
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
@@ -117,43 +117,6 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheetlayout);
-
-        LinearLayout videoLayout = dialog.findViewById(R.id.bottom_home);
-        LinearLayout shortsLayout = dialog.findViewById(R.id.bottom_about);
-        LinearLayout liveLayout = dialog.findViewById(R.id.bottom_service);
-        ImageView cancelButton = dialog.findViewById(R.id.bottom_settings);
-
-        videoLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"Upload a Video is clicked",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        shortsLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Toast.makeText(MainActivity.this,"Create a short is Clicked",Toast.LENGTH_SHORT).show();
-                // Add your code here for handling the click event
-            }
-        });
-
-        liveLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Toast.makeText(MainActivity.this,"Go live is Clicked",Toast.LENGTH_SHORT).show();
-                // Add your code here for handling the click event
-            }
-        });
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
 
         // Tombol Checkout di Bottom Sheet Layout
         btn_checkout = dialog.findViewById(R.id.btn_checkout);
@@ -184,22 +147,22 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
     }
 
     void addProductToChart(Product product) {
-        // Create a new card view for the added product
-        View cardView = LayoutInflater.from(MainActivity.this).inflate(R.layout.card_chart, cardChartLayout, false);
+        productList.add(product); // Tambahkan produk ke list
 
-        // Set the product details in the card view
-        ImageView productImage = cardView.findViewById(R.id.foto_produk_keranjang);
-        TextView productName = cardView.findViewById(R.id.nama_produk_keranjang);
-        TextView productPrice = cardView.findViewById(R.id.harga_produk_keranjang);
+        // Update adapter
+        cardChartAdapter.notifyDataSetChanged();
 
-        productName.setText(product.getNama());
-        productPrice.setText(String.valueOf(product.getHarga_jual()));
+        // Hitung total harga
+        updateTotalHarga();
+    }
 
-        // You can set the product image using Glide or any other image loading library
-        // Glide.with(MainActivity.this).load(product.getImageUrl()).into(productImage);
+    private void updateTotalHarga() {
+        int totalHarga = 0;
+        for (Product product : productList) {
+            totalHarga += product.getHarga_jual() * product.getJumlah();
+        }
 
-        // Add the card view to the chart layout
-        cardChartLayout.addView(cardView);
+        textTotalValue.setText("Rp " + totalHarga);
     }
 }
 

@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
     private List<Product> productList;
-    private static final String API_URL = "http://192.168.1.6:8000/api/tampilmenu"; // Ubah URL sesuai dengan endpoint tampilmenu di server Anda
+    private static final String API_URL = "http://192.168.102.220:8000/api/tampilmenu"; // Ubah URL sesuai dengan endpoint tampilmenu di server Anda
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
