@@ -35,12 +35,12 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
     private List<Product> productList;
-    private static final String API_URL = "http://192.168.60.220:8000/api/tampilmenu"; // Ubah URL sesuai dengan endpoint tampilmenu di server Anda
+    private static final String API_URL = "http://192.168.43.220:8000/api/tampilmenu"; // Ubah URL sesuai dengan endpoint tampilmenu di server Anda
 
     // Interface untuk menangani callback saat produk ditambahkan ke keranjang
-    public interface AddProductToChartListener {
-        void onAddProductToChart(Product product);
-    }
+//    public interface AddProductToChartListener {
+//        void onAddProductToChart(Product product);
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -122,7 +122,6 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
         if (getActivity() instanceof AddProductToChartListener) {
             AddProductToChartListener listener = (AddProductToChartListener) getActivity();
             listener.onAddProductToChart(product);
-            Log.e(TAG, "onAddProductToChart: Tetstt");
         }
     }
 

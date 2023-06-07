@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.graphics.Paint;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +20,7 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private Context context;
     private static List<Product> productList;
-    private String baseUrl = "http://192.168.60.220:8000/asset/image/image-admin/produk/"; // URL Tempat Penyimpanan Foto Produk
+    private String baseUrl = "http://192.168.43.220:8000/asset/image/image-admin/produk/"; // URL Tempat Penyimpanan Foto Produk
     private AddProductToChartListener addProductToChartListener; // Tambahkan variabel ini
 
     public ProductAdapter(Context context, List<Product> productList, AddProductToChartListener listener) {
@@ -75,6 +76,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                     Product addedProduct = getProductById(idProduk);
                     if (addedProduct != null) {
                         // Panggil metode onAddProductToChart di AddProductToChartListener
+                        Toast.makeText(context, "Berhasil ditambahkan.", Toast.LENGTH_SHORT).show();
                         addProductToChartListener.onAddProductToChart(addedProduct);
                     }
                 }

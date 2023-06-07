@@ -48,10 +48,9 @@
                 android:padding="16dp">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/card_chart"
+                    android:id="@+id/card_charts"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/card_chart"/>
+                    android:layout_height="wrap_content"/>
 
                 <!-- Input Text: Total -->
                 <LinearLayout

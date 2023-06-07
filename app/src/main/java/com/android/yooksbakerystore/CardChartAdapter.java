@@ -29,7 +29,7 @@ public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bottomsheetlayout, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.card_chart, parent, false);
         return new ViewHolder(view);
     }
 
@@ -40,36 +40,36 @@ public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.View
         holder.namaProduk.setText(product.getNama());
         holder.hargaProduk.setText("Rp " + product.getHarga_jual());
 
-        String imageUrl = "http://192.168.60.220:8000/asset/image/image-admin/produk/" + product.getFoto_produk();
-        Glide.with(context)
-                .load(imageUrl)
-                .into(holder.fotoProduk);
+        String imageUrl = "http://192.168.43.220:8000/asset/image/image-admin/produk/" + product.getFoto_produk();
+//        Glide.with(context)
+//                .load(imageUrl)
+//                .into(holder.fotoProduk);
 
-        holder.tambahButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int jumlah = product.getJumlah();
-                jumlah++;
-                product.setJumlah(jumlah);
+//        holder.tambahButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int jumlah = product.getJumlah();
+//                jumlah++;
+//                product.setJumlah(jumlah);
+//
+//                holder.jumlahRoti.setText(String.valueOf(jumlah));
+//                updateTotalHarga();
+//            }
+//        });
 
-                holder.jumlahRoti.setText(String.valueOf(jumlah));
-                updateTotalHarga();
-            }
-        });
-
-        holder.kurangButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int jumlah = product.getJumlah();
-                if (jumlah > 1) {
-                    jumlah--;
-                    product.setJumlah(jumlah);
-
-                    holder.jumlahRoti.setText(String.valueOf(jumlah));
-                    updateTotalHarga();
-                }
-            }
-        });
+//        holder.kurangButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int jumlah = product.getJumlah();
+//                if (jumlah > 1) {
+//                    jumlah--;
+//                    product.setJumlah(jumlah);
+//
+//                    holder.jumlahRoti.setText(String.valueOf(jumlah));
+//                    updateTotalHarga();
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -86,10 +86,10 @@ public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.View
             super(itemView);
             namaProduk = itemView.findViewById(R.id.nama_produk_keranjang);
             hargaProduk = itemView.findViewById(R.id.harga_produk_keranjang);
-            fotoProduk = itemView.findViewById(R.id.foto_produk_keranjang);
-            tambahButton = itemView.findViewById(R.id.tambah_button_keranjang);
-            kurangButton = itemView.findViewById(R.id.kurang_button_keranjang);
-            jumlahRoti = itemView.findViewById(R.id.jumlah_roti_keranjang);
+//            fotoProduk = itemView.findViewById(R.id.foto_produk_keranjang);
+//            tambahButton = itemView.findViewById(R.id.tambah_button_keranjang);
+//            kurangButton = itemView.findViewById(R.id.kurang_button_keranjang);
+//            jumlahRoti = itemView.findViewById(R.id.jumlah_roti_keranjang);
         }
     }
 

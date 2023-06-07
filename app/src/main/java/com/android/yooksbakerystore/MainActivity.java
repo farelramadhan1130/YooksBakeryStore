@@ -1,5 +1,7 @@
 package com.android.yooksbakerystore;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -12,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,8 +43,8 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
     DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
     private Button btn_checkout;
-    private RecyclerView recyclerView;
-    private CardChartAdapter cardChartAdapter;
+    public RecyclerView recyclerView;
+    public CardChartAdapter cardChartAdapter;
     private TextView textTotalValue;
 
     @Override
@@ -57,9 +61,8 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         View bottomsheetlayout = inflater.inflate(R.layout.bottomsheetlayout, null);
 
-        recyclerView = bottomsheetlayout.findViewById(R.id.card_chart);
+        recyclerView = bottomsheetlayout.findViewById(R.id.card_charts);
         textTotalValue = bottomsheetlayout.findViewById(R.id.text_total_value);
-
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
@@ -100,6 +103,13 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                 showBottomDialog();
             }
         });
+
+        // Button Add to Chart di ProductAdapter
+        ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList, this);
+        productAdapter.setAddProductToChartListener(MainActivity.this);
+
+        // Buat objek CardChartAdapter dan set pada RecyclerView
+        cardChartAdapter = new CardChartAdapter(productList, MainActivity.this, this);
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -114,31 +124,25 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomsheetlayout);
 
-        // Mengambil referensi RecyclerView di dalam bottomsheetlayout
-        RecyclerView recyclerView = dialog.findViewById(R.id.card_chart);
-        textTotalValue = dialog.findViewById(R.id.text_total_value);
+        recyclerView = dialog.findViewById(R.id.card_charts);
 
+        textTotalValue = dialog.findViewById(R.id.text_total_value);
+        textTotalValue.setText("Kont");
         // Tambahkan LayoutManager
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
-        // Buat objek CardChartAdapter dan set pada RecyclerView
-        cardChartAdapter = new CardChartAdapter(productList, MainActivity.this, this);
         recyclerView.setAdapter(cardChartAdapter);
+        Toast.makeText(this, String.valueOf(recyclerView.getAdapter().getItemCount()), Toast.LENGTH_SHORT).show();
 
         // Tombol Checkout di Bottom Sheet Layout
-        btn_checkout = dialog.findViewById(R.id.btn_checkout);
-        btn_checkout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NotaActivity.class);
-                startActivity(intent);
-                dialog.dismiss();
-            }
-        });
-
-        // Button Add to Chart di ProductAdapter
-        ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList, this);
-        productAdapter.setAddProductToChartListener(MainActivity.this);
+//        btn_checkout = dialog.findViewById(R.id.btn_checkout);
+//        btn_checkout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, NotaActivity.class);
+//                startActivity(intent);
+//                dialog.dismiss();
+//            }
+//        });
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
