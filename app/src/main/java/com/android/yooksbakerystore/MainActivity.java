@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         recyclerView = dialog.findViewById(R.id.card_charts);
 
         textTotalValue = dialog.findViewById(R.id.text_total_value);
-        textTotalValue.setText("Kont");
+//        textTotalValue.setText("Kont");
         // Tambahkan LayoutManager
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         recyclerView.setAdapter(cardChartAdapter);
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
 //                dialog.dismiss();
 //            }
 //        });
-
+        updateTotalHarga();
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -158,13 +158,26 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
     }
 
     private void addProductToChart(Product product) {
-        productList.add(product); // Tambahkan produk ke list
+        Product produkDitambahkan = null;
+        for (Product p : productList) {
+            if (p.getId_produk() == product.getId_produk()) {
+                produkDitambahkan = p;
+                break;
+            }
+        }
 
-        // Update adapter
-        cardChartAdapter.notifyDataSetChanged();
+        // Menampilkan hasil pemilihan data
+        if (produkDitambahkan != null) {
+            produkDitambahkan.setJumlah(produkDitambahkan.getJumlah()+1);
+        } else {
+            productList.add(product); // Tambahkan produk ke list
 
-        // Hitung total harga
-        updateTotalHarga();
+            // Update adapter
+            cardChartAdapter.notifyDataSetChanged();
+
+            // Hitung total harga
+            updateTotalHarga();
+        }
     }
 
     @Override

@@ -12,7 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.ViewHolder> {
@@ -39,37 +41,49 @@ public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.View
 
         holder.namaProduk.setText(product.getNama());
         holder.hargaProduk.setText("Rp " + product.getHarga_jual());
+        holder.jumlahRoti.setText(String.valueOf(product.getJumlah()));
 
-        String imageUrl = "http://192.168.43.220:8000/asset/image/image-admin/produk/" + product.getFoto_produk();
+        String imageUrl = "http://10.125.173.33:8000/asset/image/image-admin/produk/" + product.getFoto_produk();
 //        Glide.with(context)
 //                .load(imageUrl)
 //                .into(holder.fotoProduk);
 
-//        holder.tambahButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int jumlah = product.getJumlah();
-//                jumlah++;
-//                product.setJumlah(jumlah);
-//
-//                holder.jumlahRoti.setText(String.valueOf(jumlah));
-//                updateTotalHarga();
-//            }
-//        });
+        holder.tambahButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int jumlah = product.getJumlah();
+                jumlah++;
+                product.setJumlah(jumlah);
 
-//        holder.kurangButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int jumlah = product.getJumlah();
-//                if (jumlah > 1) {
-//                    jumlah--;
-//                    product.setJumlah(jumlah);
-//
-//                    holder.jumlahRoti.setText(String.valueOf(jumlah));
-//                    updateTotalHarga();
-//                }
-//            }
-//        });
+                holder.jumlahRoti.setText(String.valueOf(jumlah));
+                updateTotalHarga();
+            }
+        });
+
+        holder.kurangButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int jumlah = product.getJumlah();
+                if (jumlah > 1) {
+                    jumlah--;
+                    product.setJumlah(jumlah);
+
+                    holder.jumlahRoti.setText(String.valueOf(jumlah));
+                    updateTotalHarga();
+                } else if (jumlah-1 < 1) {
+                    Iterator<Product> iterator = productList.iterator();
+                    while (iterator.hasNext()) {
+                        Product products = iterator.next();
+                        if (products.getId_produk() == product.getId_produk()) {
+                            iterator.remove();
+                        }
+                    }
+
+                    notifyDataSetChanged();
+                    updateTotalHarga();
+                }
+            }
+        });
     }
 
     @Override
@@ -80,16 +94,16 @@ public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView namaProduk, hargaProduk, jumlahRoti;
         ImageView fotoProduk;
-        ImageButton tambahButton, kurangButton;
+        MaterialButton tambahButton, kurangButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             namaProduk = itemView.findViewById(R.id.nama_produk_keranjang);
             hargaProduk = itemView.findViewById(R.id.harga_produk_keranjang);
 //            fotoProduk = itemView.findViewById(R.id.foto_produk_keranjang);
-//            tambahButton = itemView.findViewById(R.id.tambah_button_keranjang);
-//            kurangButton = itemView.findViewById(R.id.kurang_button_keranjang);
-//            jumlahRoti = itemView.findViewById(R.id.jumlah_roti_keranjang);
+            tambahButton = itemView.findViewById(R.id.tambah_button_keranjang);
+            kurangButton = itemView.findViewById(R.id.kurang_button_keranjang);
+            jumlahRoti = itemView.findViewById(R.id.jumlah_roti_keranjang);
         }
     }
 
