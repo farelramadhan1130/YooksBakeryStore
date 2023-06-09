@@ -11,9 +11,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,7 +26,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +36,23 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AddProductToChartListener, CardChartAdapter.UpdateTotalHargaListener {
@@ -43,9 +62,17 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
     DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
     private Button btn_checkout;
+    private EditText edit_phone_number;
+    private EditText edit_pickup_date;
+    private Spinner spinner_bank_account;
+    private Button btn_upload_image;
+    private TextView text_uploaded_file_name;
+    private Uri imageUri;
     public RecyclerView recyclerView;
     public CardChartAdapter cardChartAdapter;
     private TextView textTotalValue;
+    private static final int PICK_IMAGE_REQUEST = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +90,11 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
 
         recyclerView = bottomsheetlayout.findViewById(R.id.card_charts);
         textTotalValue = bottomsheetlayout.findViewById(R.id.text_total_value);
+        edit_phone_number = bottomsheetlayout.findViewById(R.id.edit_phone_number);
+        edit_pickup_date = bottomsheetlayout.findViewById(R.id.edit_pickup_date);
+        spinner_bank_account = bottomsheetlayout.findViewById(R.id.spinner_bank_account);
+        btn_upload_image = bottomsheetlayout.findViewById(R.id.btn_upload_image);
+        text_uploaded_file_name = bottomsheetlayout.findViewById(R.id.text_uploaded_file_name);
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
@@ -104,6 +136,13 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
             }
         });
 
+        btn_upload_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openImagePicker();
+            }
+        });
+
         // Button Add to Chart di ProductAdapter
         ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList, this);
         productAdapter.setAddProductToChartListener(MainActivity.this);
@@ -127,22 +166,127 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         recyclerView = dialog.findViewById(R.id.card_charts);
 
         textTotalValue = dialog.findViewById(R.id.text_total_value);
-//        textTotalValue.setText("Kont");
+        edit_phone_number = dialog.findViewById(R.id.edit_phone_number);
+        edit_pickup_date = dialog.findViewById(R.id.edit_pickup_date);
+        spinner_bank_account = dialog.findViewById(R.id.spinner_bank_account);
+        btn_upload_image = dialog.findViewById(R.id.btn_upload_image);
+        text_uploaded_file_name = dialog.findViewById(R.id.text_uploaded_file_name);
+        // Tombol Checkout di Bottom Sheet Layout
+        btn_checkout = dialog.findViewById(R.id.btn_checkout);
+
         // Tambahkan LayoutManager
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         recyclerView.setAdapter(cardChartAdapter);
         Toast.makeText(this, String.valueOf(recyclerView.getAdapter().getItemCount()), Toast.LENGTH_SHORT).show();
 
-        // Tombol Checkout di Bottom Sheet Layout
-//        btn_checkout = dialog.findViewById(R.id.btn_checkout);
-//        btn_checkout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, NotaActivity.class);
-//                startActivity(intent);
-//                dialog.dismiss();
-//            }
-//        });
+        btn_upload_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openImagePicker();
+            }
+        });
+
+        btn_checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Mendapatkan data dari user
+                // Mendapatkan id user dari sharedPreferences "yyyy-MM-dd"
+                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                int idUser = sharedPreferences.getInt("id_user", 0);
+
+                // Mendapatkan tanggal penjualan saat ini
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                String tanggalPenjualan = dateFormat.format(calendar.getTime());
+
+                // Lakukan proses pembaruan total harga
+                updateTotalHarga();
+                // Dapatkan nilai total harga dari textTotalValue
+                String totalPenjualan = textTotalValue.getText().toString();
+
+                int idToko = 1;
+                String statusPesanan = "Pending";
+                int nomerTelp = Integer.parseInt(edit_phone_number.getText().toString());
+                String tanggalAmbilPenjualan = edit_pickup_date.getText().toString();
+
+                // Menyimpan Ke Database dan anu
+                String bukti = text_uploaded_file_name.getText().toString();
+                String fileUrl = "http://192.168.1.7:8000/asset/image/image-admin/bukti/" + bukti;
+                simpanNamaFileKeDatabase(bukti);
+                // Mendapatkan byte array data dari gambar
+                byte[] fileData = getFileDataFromPath(getRealPathFromURI(imageUri));
+                // Membuat permintaan POST menggunakan Volley
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, fileUrl,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // Respon berhasil dari server
+                                // Lakukan operasi penyimpanan nama file pada database
+                                simpanNamaFileKeDatabase(bukti);
+
+                                // Lakukan tindakan setelah mengunggah dan menyimpan gambar berhasil, misalnya:
+                                // - Menampilkan notifikasi atau pesan sukses
+                                // - Mengganti tampilan atau memuat halaman baru
+
+                                Intent intent = new Intent(MainActivity.this, NotaActivity.class);
+                                startActivity(intent);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Respon gagal dari server
+                                Toast.makeText(MainActivity.this, "Terjadi kesalahan: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }) {
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        return fileData;
+                    }
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "image/jpeg/jpg"; // Ganti dengan tipe konten yang sesuai dengan gambar yang Anda unggah
+                    }
+                };
+
+                // Menambahkan permintaan ke antrian permintaan Volley
+                Volley.newRequestQueue(MainActivity.this).add(stringRequest);
+
+                String metodePembayaran = spinner_bank_account.getSelectedItem().toString();
+
+                // Lakukan proses posting data ke server
+                // Ganti bagian ini dengan kode untuk mengirim data ke server Anda
+                // Misalnya, menggunakan metode dari kelas MyServerRequest
+                MyServerRequest myServerRequest = new MyServerRequest(MainActivity.this);
+                myServerRequest.checkout(idUser, idToko, String.valueOf(nomerTelp), tanggalPenjualan, tanggalAmbilPenjualan, totalPenjualan, metodePembayaran, bukti, statusPesanan, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Proses berhasil
+                        Toast.makeText(MainActivity.this, "Data terkirim ke server", Toast.LENGTH_SHORT).show();
+
+                        // Lakukan tindakan setelah posting data berhasil, misalnya:
+                        // - Menampilkan notifikasi atau pesan sukses
+                        // - Mengganti tampilan atau memuat halaman baru
+
+                        Intent intent = new Intent(MainActivity.this, NotaActivity.class);
+                        startActivity(intent);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Proses gagal
+                        Toast.makeText(MainActivity.this, "Terjadi kesalahan: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // Tutup dialog atau lakukan tindakan lain setelah klik tombol checkout
+                // dialog.dismiss();
+            }
+        });
+
+
         updateTotalHarga();
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -151,6 +295,111 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
+    private void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            String fileName = getFileName(imageUri);
+            text_uploaded_file_name.setText(fileName);
+
+            // Simpan nama file ke database
+            simpanNamaFileKeDatabase(fileName);
+        }
+    }
+
+    private String getFileName(Uri uri) {
+        String fileName = null;
+        String scheme = uri.getScheme();
+
+        if (scheme != null && scheme.equals("content")) {
+            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+
+                if (nameIndex != -1) {
+                    fileName = cursor.getString(nameIndex);
+                }
+
+                cursor.close();
+            }
+        }
+
+        if (fileName == null) {
+            fileName = uri.getLastPathSegment();
+        }
+
+        return fileName;
+    }
+
+    private byte[] getFileDataFromPath(String filePath) {
+        File file = new File(filePath);
+        byte[] fileData = null;
+
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream((int) file.length());
+            byte[] buffer = new byte[1024];
+            int len;
+
+            while ((len = fis.read(buffer)) != -1) {
+                bos.write(buffer, 0, len);
+            }
+
+            fis.close();
+            bos.close();
+            fileData = bos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return fileData;
+    }
+
+    private String getRealPathFromURI(Uri uri) {
+        String filePath = null;
+        String[] projection = {MediaStore.Images.Media.DATA};
+
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                filePath = cursor.getString(columnIndex);
+            }
+            cursor.close();
+        }
+
+        return filePath;
+    }
+    private void simpanNamaFileKeDatabase(String fileName) {
+        // Lakukan proses penyimpanan nama file ke database Anda
+        // Misalnya, menggunakan metode dari kelas MyServerRequest
+        MyServerRequest myServerRequest = new MyServerRequest(MainActivity.this);
+        myServerRequest.simpanNamaFile(fileName, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // Proses berhasil
+                Toast.makeText(MainActivity.this, "Nama file berhasil disimpan di database", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Proses gagal
+                Toast.makeText(MainActivity.this, "Terjadi kesalahan: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+    // About Product
     @Override
     public void onAddProductToChart(Product product) {
         // Tambahkan produk ke keranjang

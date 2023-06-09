@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
     private List<Product> productList;
-    private static final String API_URL = "http://10.125.173.33:8000/api/tampilmenu"; // Ubah URL sesuai dengan endpoint tampilmenu di server Anda
+    private static final String API_URL = "http://192.168.1.7:8000/api/tampilmenu"; // Ubah URL sesuai dengan endpoint tampilmenu di server Anda
 
     // Interface untuk menangani callback saat produk ditambahkan ke keranjang
 //    public interface AddProductToChartListener {
@@ -76,6 +76,9 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
                                 JSONObject dataObject = data.getJSONObject(i);
 
                                 int idProduk = dataObject.getInt("id_produk");
+                                int idKategori = dataObject.getInt("id_kategori");
+                                int idSupplier = dataObject.getInt("id_supplier");
+                                int idToko = dataObject.getInt("id_toko");
                                 int hargaJual = dataObject.getInt("jual_produk");
                                 int hargaCoret = dataObject.getInt("harga_coret");
                                 int stok = dataObject.getInt("stock_produk");
@@ -83,7 +86,7 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
                                 String deskripsiProduk = dataObject.getString("keterangan_produk");
                                 String fotoProduk = dataObject.getString("foto_produk");
 
-                                Product product = new Product(idProduk, hargaJual, hargaCoret, stok, nama, deskripsiProduk, fotoProduk);
+                                Product product = new Product(idProduk, idKategori, idSupplier, idToko, hargaJual, hargaCoret, stok, nama, deskripsiProduk, fotoProduk);
                                 productList.add(product);
                             }
                             productAdapter.notifyDataSetChanged();

@@ -43,7 +43,7 @@ public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.View
         holder.hargaProduk.setText("Rp " + product.getHarga_jual());
         holder.jumlahRoti.setText(String.valueOf(product.getJumlah()));
 
-        String imageUrl = "http://10.125.173.33:8000/asset/image/image-admin/produk/" + product.getFoto_produk();
+        String imageUrl = "http://192.168.1.7:8000/asset/image/image-admin/produk/" + product.getFoto_produk();
 //        Glide.with(context)
 //                .load(imageUrl)
 //                .into(holder.fotoProduk);

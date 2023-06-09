@@ -21,7 +21,7 @@ import java.util.Optional;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private Context context;
     private static List<Product> productList;
-    private String baseUrl = "http://10.125.173.33:8000/asset/image/image-admin/produk/"; // URL Tempat Penyimpanan Foto Produk
+    private String baseUrl = "http://192.168.1.7:8000/asset/image/image-admin/produk/"; // URL Tempat Penyimpanan Foto Produk
     private AddProductToChartListener addProductToChartListener; // Tambahkan variabel ini
 
     public ProductAdapter(Context context, List<Product> productList, AddProductToChartListener listener) {
@@ -47,6 +47,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Product product = productList.get(position);
 
         holder.idProduk = product.getId_produk();
+        holder.idKategori = product.getId_kategori();
+        holder.idSupplier = product.getId_supplier();
+        holder.idToko = product.getId_toko();
         holder.namaRotiTextView.setText(product.getNama());
         holder.deskripsiRotiTextView.setText(product.getDeskripsi_produk());
         holder.hargaRotiTextView.setText(String.valueOf(product.getHarga_jual()));
@@ -69,7 +72,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 // Anda dapat mengakses holder.idProduk untuk mendapatkan ID produk yang diklik
                 // Implementasikan logika tambahan sesuai kebutuhan Anda
                 int idProduk = holder.idProduk;
-
+                int idKategori = holder.idKategori;
+                int idSupplier = holder.idSupplier;
+                int idToko = holder.idToko;
                 // Implementasikan aksi tambahan sesuai kebutuhan Anda
 
                 // Tambahkan produk ke card_chart.xml
@@ -102,6 +107,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         TextView deskripsiRotiTextView;
         Button keranjangButton;
         int idProduk;
+        int idKategori;
+        int idSupplier;
+        int idToko;
         AddProductToChartListener addProductToChartListener; // Jadikan variabel ini static
 
         ProductViewHolder(@NonNull View itemView) {

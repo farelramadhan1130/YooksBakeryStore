@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Set nilai shared preferences isLoggedIn menjadi true
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putBoolean("isLoggedIn", true);
+                            editor.putString("userId", response); // Simpan ID user ke dalam SharedPreference
                             editor.apply();
 
                             // Arahkan ke halaman utama (HomeActivity)

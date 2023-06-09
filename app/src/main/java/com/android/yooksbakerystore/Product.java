@@ -2,6 +2,9 @@ package com.android.yooksbakerystore;
 
 public class Product {
     private int id_produk;
+    private int id_kategori;
+    private int id_supplier;
+    private int id_toko;
     private int harga_jual;
     private int harga_coret;
     private int stok;
@@ -10,8 +13,11 @@ public class Product {
     private String foto_produk;
     private int jumlah; // Tambahkan atribut jumlah
 
-    public Product(int id_produk, int harga_jual, int harga_coret, int stok, String nama, String deskripsi_produk, String foto_produk) {
+    public Product(int id_produk, int id_kategori, int id_supplier, int id_toko, int harga_jual, int harga_coret, int stok, String nama, String deskripsi_produk, String foto_produk) {
         this.id_produk = id_produk;
+        this.id_kategori = id_kategori;
+        this.id_supplier = id_supplier;
+        this.id_toko = id_toko;
         this.nama = nama;
         this.deskripsi_produk = deskripsi_produk;
         this.harga_jual = harga_jual;
@@ -27,6 +33,15 @@ public class Product {
 
     public int getId_produk() {
         return id_produk;
+    }
+    public int getId_kategori() {
+        return id_kategori;
+    }
+    public int getId_supplier() {
+        return id_supplier;
+    }
+    public int getId_toko() {
+        return id_toko;
     }
 
     public String getNama() {
