@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -19,12 +20,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -37,7 +40,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -53,7 +58,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements AddProductToChartListener, CardChartAdapter.UpdateTotalHargaListener {
 
@@ -213,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                 // Menyimpan Ke Database dan anu
                 String bukti = text_uploaded_file_name.getText().toString();
                 String fileUrl = "http://192.168.1.7:8000/asset/image/image-admin/bukti/" + bukti;
-                simpanNamaFileKeDatabase(bukti);
+                simpanNamaFileKeDatabase(fileUrl);
                 // Mendapatkan byte array data dari gambar
                 byte[] fileData = getFileDataFromPath(getRealPathFromURI(imageUri));
                 // Membuat permintaan POST menggunakan Volley
@@ -247,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
 
                     @Override
                     public String getBodyContentType() {
-                        return "image/jpeg/jpg"; // Ganti dengan tipe konten yang sesuai dengan gambar yang Anda unggah
+                        return "image/jpeg/"; // Ganti dengan tipe konten yang sesuai dengan gambar yang Anda unggah
                     }
                 };
 
@@ -310,7 +317,62 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
             text_uploaded_file_name.setText(fileName);
 
             // Simpan nama file ke database
-            simpanNamaFileKeDatabase(fileName);
+//            simpanNamaFileKeDatabase(fileName);
+        }
+    }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    private void uploadFile(String url, File file, final Response.Listener<String> responseListener, final Response.ErrorListener errorListener) {
+        try {
+            // Baca file menjadi byte array
+            FileInputStream fis = new FileInputStream(file);
+            byte[] fileBytes = new byte[(int) file.length()];
+            fis.read(fileBytes);
+            fis.close();
+
+            // Konversi byte array menjadi string dalam format Base64
+            String encodedFile = Base64.encodeToString(fileBytes, Base64.DEFAULT);
+
+            // Buat parameter POST
+            HashMap<String, String> params = new HashMap<>();
+            params.put("file", encodedFile);
+
+            // Buat request POST menggunakan Volley
+            StringRequest request = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Handle the response from the server
+                            Log.d("Upload", "Response: " + response);
+                            responseListener.onResponse(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // Handle the error response
+                            Log.e("Upload", "Error: " + error.getMessage());
+                            errorListener.onErrorResponse(error);
+                        }
+                    }
+            ) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    // Mengembalikan parameter POST
+                    return params;
+                }
+            };
+
+            // Tambahkan request ke antrian Volley
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            queue.add(request);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -396,8 +458,6 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
             }
         });
     }
-
-
 
     // About Product
     @Override
