@@ -151,7 +151,7 @@
 //            this.checkoutListener = listener;
 //        }
 
-        public void checkout(int idUser, int idToko, String nomerTelp, String tanggalPenjualan, String tanggalAmbilPenjualan, String totalPenjualan, String metodePembayaran, String bukti, String statusPesanan, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
+        public void checkout(int id_user, int id_toko, String nomer_telp, String tanggal_penjualan, String tanggal_ambil_penjualan, String total_penjualan, String  metode_pembayaran, String bukti, String status_pesanan, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
             // URL endpoint untuk checkout
             String url = "http://192.168.1.7:8000/api/checkout";
 
@@ -178,14 +178,14 @@
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
-                    params.put("id_user", String.valueOf(idUser));
-                    params.put("id_toko", String.valueOf(idToko));
-                    params.put("status_pesanan", String.valueOf(statusPesanan));
-                    params.put("telepon_user", nomerTelp);
-                    params.put("tanggal_penjualan", tanggalPenjualan);
-                    params.put("tanggal_ambil_penjualan", tanggalAmbilPenjualan);
-                    params.put("total_penjualan", String.valueOf(totalPenjualan));
-                    params.put("metode_pembayaran", metodePembayaran);
+                    params.put("id_user", String.valueOf(id_user));
+                    params.put("id_toko", String.valueOf(id_toko));
+                    params.put("status_pesanan", String.valueOf(status_pesanan));
+                    params.put("telepon_user", nomer_telp);
+                    params.put("tanggal_penjualan", tanggal_penjualan);
+                    params.put("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
+                    params.put("total_penjualan", String.valueOf(total_penjualan));
+                    params.put("metode_pembayaran", metode_pembayaran);
                     params.put("bukti", bukti);
                     return params;
                 }

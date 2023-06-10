@@ -193,22 +193,22 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                 // Mendapatkan data dari user
                 // Mendapatkan id user dari sharedPreferences "yyyy-MM-dd"
                 SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                int idUser = sharedPreferences.getInt("id_user", 0);
+                int id_user = sharedPreferences.getInt("id_user", 0);
 
                 // Mendapatkan tanggal penjualan saat ini
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                String tanggalPenjualan = dateFormat.format(calendar.getTime());
+                String tanggal_penjualan = dateFormat.format(calendar.getTime());
 
                 // Lakukan proses pembaruan total harga
                 updateTotalHarga();
                 // Dapatkan nilai total harga dari textTotalValue
-                String totalPenjualan = textTotalValue.getText().toString();
+                String total_penjualan = textTotalValue.getText().toString();
 
-                int idToko = 1;
-                String statusPesanan = "Pending";
-                int nomerTelp = Integer.parseInt(edit_phone_number.getText().toString());
-                String tanggalAmbilPenjualan = edit_pickup_date.getText().toString();
+                int id_toko = 1;
+                String status_pesanan = "Pending";
+                int nomer_telp = Integer.parseInt(edit_phone_number.getText().toString());
+                String tanggal_ambil_penjualan = edit_pickup_date.getText().toString();
 
                 // Menyimpan Ke Database dan anu
                 String bukti = text_uploaded_file_name.getText().toString();
@@ -254,13 +254,13 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                 // Menambahkan permintaan ke antrian permintaan Volley
                 Volley.newRequestQueue(MainActivity.this).add(stringRequest);
 
-                String metodePembayaran = spinner_bank_account.getSelectedItem().toString();
+                String metode_pembayaran = spinner_bank_account.getSelectedItem().toString();
 
                 // Lakukan proses posting data ke server
                 // Ganti bagian ini dengan kode untuk mengirim data ke server Anda
                 // Misalnya, menggunakan metode dari kelas MyServerRequest
                 MyServerRequest myServerRequest = new MyServerRequest(MainActivity.this);
-                myServerRequest.checkout(idUser, idToko, String.valueOf(nomerTelp), tanggalPenjualan, tanggalAmbilPenjualan, totalPenjualan, metodePembayaran, bukti, statusPesanan, new Response.Listener<String>() {
+                myServerRequest.checkout(id_user, id_toko, String.valueOf(nomer_telp), tanggal_penjualan, tanggal_ambil_penjualan, total_penjualan, metode_pembayaran, bukti, status_pesanan, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // Proses berhasil
