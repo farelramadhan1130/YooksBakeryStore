@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                     .build();
 
             Request.Builder requestBuilder = new Request.Builder()
-                    .url("http://192.168.191.220:8000/asset/image/image-admin/bukti/")
+                    .url("http://192.168.1.4:8000/asset/image/image-admin/bukti/")
                     .post(requestBody);
 
             Request request = requestBuilder.build();
