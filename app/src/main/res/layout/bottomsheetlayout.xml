@@ -142,7 +142,7 @@
                         android:layout_marginRight="5dp"
                         android:text="Bukti Pembayaran"
                         android:textColor="#CCCCCC"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <!-- Button: Checkout -->

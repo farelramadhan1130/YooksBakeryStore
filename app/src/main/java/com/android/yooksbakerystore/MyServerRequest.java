@@ -181,7 +181,7 @@
                     params.put("id_user", String.valueOf(id_user));
                     params.put("id_toko", String.valueOf(id_toko));
                     params.put("status_pesanan", String.valueOf(status_pesanan));
-                    params.put("telepon_user", nomer_telp);
+//                    params.put("telepon_user", nomer_telp);
                     params.put("tanggal_penjualan", tanggal_penjualan);
                     params.put("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
                     params.put("total_penjualan", String.valueOf(total_penjualan));

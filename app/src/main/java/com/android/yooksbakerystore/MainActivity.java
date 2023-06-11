@@ -198,13 +198,13 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
             public void onClick(View view) {
 
                 // Mendapatkan data dari user
-                // Mendapatkan id user dari sharedPreferences "yyyy-MM-dd"
+                // Mendapatkan id user dari sharedPreferences
                 SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                 int id_user = sharedPreferences.getInt("id_user", 0);
 
                 // Mendapatkan tanggal penjualan saat ini
                 Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String tanggal_penjualan = dateFormat.format(calendar.getTime());
 
                 // Lakukan proses pembaruan total harga
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
 
                 int id_toko = 1;
                 String status_pesanan = "Pending";
-                int nomer_telp = Integer.parseInt(edit_phone_number.getText().toString());
+                String nomer_telp = edit_phone_number.getText().toString();
                 String tanggal_ambil_penjualan = edit_pickup_date.getText().toString();
 
                 // Menyimpan Ke Database dan anu
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                             public void onResponse(String response) {
                                 // Respon berhasil dari server
                                 // Lakukan operasi penyimpanan nama file pada database
-                                simpanNamaFileKeDatabase(bukti);
+                                simpanNamaFileKeDatabase(fileUrl);
 
                                 // Lakukan tindakan setelah mengunggah dan menyimpan gambar berhasil, misalnya:
                                 // - Menampilkan notifikasi atau pesan sukses

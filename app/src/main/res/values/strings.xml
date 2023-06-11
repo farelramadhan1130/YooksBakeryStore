@@ -5,7 +5,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="bank_accounts">
+        <item>Pilih Metode Pembayaran</item>
         <item>Bank BCA - 098828789874 a/n Yooks Bakery</item>
         <item>Bank BRI - 083299887744 a/n Yooks Bakery</item>
+        <item>DANA - 083857726588 a/n Javier</item>
     </string-array>
 </resources>
