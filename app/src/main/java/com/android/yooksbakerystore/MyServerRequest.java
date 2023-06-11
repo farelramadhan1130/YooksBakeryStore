@@ -40,12 +40,13 @@
         // Menambahkan interface ServerCallback
         public interface ServerCallback {
             void onSuccess(String response);
+
             void onError(String error);
         }
 
         public void login(String email, String password, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
             // URL endpoint untuk login
-            String url = "http://192.168.1.7:8000/api/login";
+            String url = "http://192.168.112.220:8000/api/login";
 
             // membuat objek RequestQueue untuk mengirim request ke server
             RequestQueue queue = Volley.newRequestQueue(context);
@@ -68,17 +69,6 @@
                                     editor.apply();
                                     // Mengambil ID pengguna dari SharedPreferences
                                     String userId = sharedPreferences.getString("userId", "");
-
-//                                    // Panggil method onCheckout pada checkoutListener
-//                                    if (checkoutListener != null) {
-//                                        String tanggalPenjualan = getCurrentDate();
-//                                        String tanggalAmbilPenjualan = getPickupDate();
-//                                        String totalPenjualan = getTotalHarga();
-//                                        String metodePembayaran = getMetodePembayaran();
-//                                        String bukti = getBukti();
-//
-//                                        checkoutListener.onCheckout(userId, tanggalPenjualan, tanggalAmbilPenjualan, Integer.parseInt(totalPenjualan), metodePembayaran, bukti);
-//                                    }
 
                                     Intent intent = new Intent(context, SplashScreenActivity.class);
                                     context.startActivity(intent);
@@ -111,49 +101,9 @@
             queue.add(stringRequest);
         }
 
-//        // Fungsi bantuan untuk mendapatkan tanggal saat ini
-//        private String getCurrentDate() {
-//            // Implementasikan logika untuk mendapatkan tanggal saat ini
-//            // Contoh: return tanggal saat ini dalam format yang diinginkan (misal: "2023-06-08")
-//            return "2023-06-08";
-//        }
-//
-//        // Fungsi bantuan untuk mendapatkan tanggal ambil penjualan
-//        private String getPickupDate() {
-//            // Implementasikan logika untuk mendapatkan tanggal ambil penjualan
-//            // Contoh: return tanggal ambil penjualan dalam format yang diinginkan (misal: "2023-06-10")
-//            return "2023-06-10";
-//        }
-//
-//        // Fungsi bantuan untuk mendapatkan total harga
-//        private String getTotalHarga() {
-//            // Implementasikan logika untuk mendapatkan total harga
-//            // Contoh: return total harga dalam format yang diinginkan (misal: "100000")
-//            return "100000";
-//        }
-//
-//        // Fungsi bantuan untuk mendapatkan metode pembayaran
-//        private String getMetodePembayaran() {
-//            // Implementasikan logika untuk mendapatkan metode pembayaran
-//            // Contoh: return metode pembayaran yang dipilih (misal: "Transfer Bank")
-//            return "Transfer Bank";
-//        }
-//
-//        // Fungsi bantuan untuk mendapatkan bukti pembayaran
-//        private String getBukti() {
-//            // Implementasikan logika untuk mendapatkan bukti pembayaran
-//            // Contoh: return path atau URL gambar bukti pembayaran
-//            return "https://example.com/bukti_pembayaran.jpg";
-//        }
-//
-//        // Setter untuk CheckoutListener
-//        public void setCheckoutListener(CheckoutListener listener) {
-//            this.checkoutListener = listener;
-//        }
-
-        public void checkout(int id_user, int id_toko, String nomer_telp, String tanggal_penjualan, String tanggal_ambil_penjualan, String total_penjualan, String  metode_pembayaran, String bukti, String status_pesanan, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
+        public void checkout(int id_user, int id_toko, String nomer_telp, String tanggal_penjualan, String tanggal_ambil_penjualan, String total_penjualan, String metode_pembayaran, String bukti, String status_pesanan, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
             // URL endpoint untuk checkout
-            String url = "http://192.168.1.7:8000/api/checkout";
+            String url = "http://192.168.112.220:8000/api/checkout";
 
             // Membuat objek StringRequest untuk melakukan request POST
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -193,12 +143,5 @@
 
             // Menambahkan request ke dalam queue
             requestQueue.add(stringRequest);
-        }
-
-        public void simpanNamaFile(String fileName, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
-            // Implementasikan logika penyimpanan nama file ke database di sini
-            // ...
-            // Panggil successListener jika penyimpanan berhasil
-            successListener.onResponse("Penyimpanan nama file berhasil");
         }
     }

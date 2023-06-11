@@ -34,6 +34,17 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,7 +52,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -146,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         btn_upload_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                chooseImage();
                 openImagePicker();
             }
         });
@@ -196,8 +207,8 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         btn_checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // Mendapatkan data dari user
+
                 // Mendapatkan id user dari sharedPreferences
                 SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                 int id_user = sharedPreferences.getInt("id_user", 0);
@@ -219,48 +230,6 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
 
                 // Menyimpan Ke Database dan anu
                 String bukti = text_uploaded_file_name.getText().toString();
-                String fileUrl = "http://192.168.1.7:8000/asset/image/image-admin/bukti/" + bukti;
-                simpanNamaFileKeDatabase(fileUrl);
-                // Mendapatkan byte array data dari gambar
-                byte[] fileData = getFileDataFromPath(getRealPathFromURI(imageUri));
-                // Membuat permintaan POST menggunakan Volley
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, fileUrl,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                // Respon berhasil dari server
-                                // Lakukan operasi penyimpanan nama file pada database
-                                simpanNamaFileKeDatabase(fileUrl);
-
-                                // Lakukan tindakan setelah mengunggah dan menyimpan gambar berhasil, misalnya:
-                                // - Menampilkan notifikasi atau pesan sukses
-                                // - Mengganti tampilan atau memuat halaman baru
-
-                                Intent intent = new Intent(MainActivity.this, NotaActivity.class);
-                                startActivity(intent);
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                // Respon gagal dari server
-                                Toast.makeText(MainActivity.this, "Terjadi kesalahan: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }) {
-                    @Override
-                    public byte[] getBody() throws AuthFailureError {
-                        return fileData;
-                    }
-
-                    @Override
-                    public String getBodyContentType() {
-                        return "image/jpeg/"; // Ganti dengan tipe konten yang sesuai dengan gambar yang Anda unggah
-                    }
-                };
-
-                // Menambahkan permintaan ke antrian permintaan Volley
-                Volley.newRequestQueue(MainActivity.this).add(stringRequest);
-
                 String metode_pembayaran = spinner_bank_account.getSelectedItem().toString();
 
                 // Lakukan proses posting data ke server
@@ -307,6 +276,15 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
+    // Implementasikan method berikut pada saat pengguna mengklik tombol untuk memilih foto
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -314,65 +292,43 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             String fileName = getFileName(imageUri);
+            String filePath = getRealPathFromURI(imageUri); // Mendapatkan path absolut file dari Uri
             text_uploaded_file_name.setText(fileName);
+            // Lakukan operasi upload file ke server atau simpan file di direktori tujuan
+            // Kirim file menggunakan OkHttp
+            OkHttpClient client = new OkHttpClient();
 
-            // Simpan nama file ke database
-//            simpanNamaFileKeDatabase(fileName);
-        }
-    }
+            File file = new File(filePath);
+            RequestBody requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("foto", file.getName(), RequestBody.create(MediaType.parse("image/*"), file))
+                    .build();
 
-    private String getFileExtension(Uri uri) {
-        ContentResolver contentResolver = getContentResolver();
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-    }
+            Request.Builder requestBuilder = new Request.Builder()
+                    .url("http://192.168.112.220:8000/asset/image/image-admin/bukti/")
+                    .post(requestBody);
 
-    private void uploadFile(String url, File file, final Response.Listener<String> responseListener, final Response.ErrorListener errorListener) {
-        try {
-            // Baca file menjadi byte array
-            FileInputStream fis = new FileInputStream(file);
-            byte[] fileBytes = new byte[(int) file.length()];
-            fis.read(fileBytes);
-            fis.close();
-
-            // Konversi byte array menjadi string dalam format Base64
-            String encodedFile = Base64.encodeToString(fileBytes, Base64.DEFAULT);
-
-            // Buat parameter POST
-            HashMap<String, String> params = new HashMap<>();
-            params.put("file", encodedFile);
-
-            // Buat request POST menggunakan Volley
-            StringRequest request = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Handle the response from the server
-                            Log.d("Upload", "Response: " + response);
-                            responseListener.onResponse(response);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Handle the error response
-                            Log.e("Upload", "Error: " + error.getMessage());
-                            errorListener.onErrorResponse(error);
-                        }
-                    }
-            ) {
+            Request request = requestBuilder.build();
+            client.newCall(request).enqueue(new Callback() {
                 @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    // Mengembalikan parameter POST
-                    return params;
+                public void onFailure(Call call, IOException e) {
+                    // Tangani kegagalan pengiriman
+                    e.printStackTrace();
                 }
-            };
 
-            // Tambahkan request ke antrian Volley
-            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-            queue.add(request);
-        } catch (IOException e) {
-            e.printStackTrace();
+                @Override
+                public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                    if (response.code() == 200) {
+                        // Respons berhasil diterima
+                        String responseData = response.body().string();
+                        // Lakukan tindakan yang sesuai dengan respons
+                    } else {
+                        // Respons tidak berhasil diterima
+                        // Tangani kesalahan respons
+                    }
+                    response.close();
+                }
+            });
         }
     }
 
@@ -401,62 +357,19 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         return fileName;
     }
 
-    private byte[] getFileDataFromPath(String filePath) {
-        File file = new File(filePath);
-        byte[] fileData = null;
-
-        try {
-            FileInputStream fis = new FileInputStream(file);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream((int) file.length());
-            byte[] buffer = new byte[1024];
-            int len;
-
-            while ((len = fis.read(buffer)) != -1) {
-                bos.write(buffer, 0, len);
-            }
-
-            fis.close();
-            bos.close();
-            fileData = bos.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return fileData;
-    }
-
-    private String getRealPathFromURI(Uri uri) {
-        String filePath = null;
-        String[] projection = {MediaStore.Images.Media.DATA};
-
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                filePath = cursor.getString(columnIndex);
-            }
+    // Metode untuk mendapatkan path absolut file dari Uri
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor == null) {
+            return contentUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int columnIdx = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            String filePath = cursor.getString(columnIdx);
             cursor.close();
+            return filePath;
         }
-
-        return filePath;
-    }
-    private void simpanNamaFileKeDatabase(String fileName) {
-        // Lakukan proses penyimpanan nama file ke database Anda
-        // Misalnya, menggunakan metode dari kelas MyServerRequest
-        MyServerRequest myServerRequest = new MyServerRequest(MainActivity.this);
-        myServerRequest.simpanNamaFile(fileName, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                // Proses berhasil
-                Toast.makeText(MainActivity.this, "Nama file berhasil disimpan di database", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // Proses gagal
-                Toast.makeText(MainActivity.this, "Terjadi kesalahan: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     // About Product
