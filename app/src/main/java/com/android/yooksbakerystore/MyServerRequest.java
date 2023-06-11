@@ -46,7 +46,7 @@
 
         public void login(String email, String password, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
             // URL endpoint untuk login
-            String url = "http://192.168.112.220:8000/api/login";
+            String url = "http://192.168.191.220:8000/api/login";
 
             // membuat objek RequestQueue untuk mengirim request ke server
             RequestQueue queue = Volley.newRequestQueue(context);
@@ -103,7 +103,7 @@
 
         public void checkout(int id_user, int id_toko, String nomer_telp, String tanggal_penjualan, String tanggal_ambil_penjualan, String total_penjualan, String metode_pembayaran, String bukti, String status_pesanan, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
             // URL endpoint untuk checkout
-            String url = "http://192.168.112.220:8000/api/checkout";
+            String url = "http://192.168.191.220:8000/api/checkout";
 
             // Membuat objek StringRequest untuk melakukan request POST
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,

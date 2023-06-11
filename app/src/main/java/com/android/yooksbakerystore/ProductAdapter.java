@@ -21,7 +21,7 @@ import java.util.Optional;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private Context context;
     private static List<Product> productList;
-    private String baseUrl = "http://192.168.112.220:8000/asset/image/image-admin/produk/"; // URL Tempat Penyimpanan Foto Produk
+    private String baseUrl = "http://192.168.191.220:8000/asset/image/image-admin/produk/"; // URL Tempat Penyimpanan Foto Produk
     private AddProductToChartListener addProductToChartListener; // Tambahkan variabel ini
 
     public ProductAdapter(Context context, List<Product> productList, AddProductToChartListener listener) {
