@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -46,6 +48,7 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        EditText research = view.findViewById(R.id.search);
         recyclerView = view.findViewById(R.id.menu_roti);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
@@ -56,6 +59,14 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
 
         fetchProducts();
 
+        research.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                String searchQuery = research.getText().toString().trim();
+                filterProductList(searchQuery);
+                return true;
+            }
+            return false;
+        });
         return view;
     }
 
@@ -114,10 +125,10 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
         }
     }
 
-    // Tambahkan metode ini untuk mengambil URL gambar dan memuatnya ke ImageView menggunakan Picasso
-    private void loadProductImage(String imageUrl, ImageView imageView) {
-        Picasso.get().load(imageUrl).into(imageView);
-    }
+//    // Tambahkan metode ini untuk mengambil URL gambar dan memuatnya ke ImageView menggunakan Picasso
+//    private void loadProductImage(String imageUrl, ImageView imageView) {
+//        Picasso.get().load(imageUrl).into(imageView);
+//    }
 
     @Override
     public void onAddProductToChart(Product product) {
@@ -126,6 +137,17 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
             AddProductToChartListener listener = (AddProductToChartListener) getActivity();
             listener.onAddProductToChart(product);
         }
+    }
+
+    private void filterProductList(String searchQuery) {
+        List<Product> filteredList = new ArrayList<>();
+        for (Product product : productList) {
+            String productName = product.getNama().toLowerCase();
+            if (productName.contains(searchQuery.toLowerCase())) {
+                filteredList.add(product);
+            }
+        }
+        productAdapter.setProductList(filteredList);
     }
 
 }

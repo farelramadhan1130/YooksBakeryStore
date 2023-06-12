@@ -24,6 +24,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private String baseUrl = "http://192.168.1.4:8000/asset/image/image-admin/produk/"; // URL Tempat Penyimpanan Foto Produk
     private AddProductToChartListener addProductToChartListener; // Tambahkan variabel ini
 
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+        notifyDataSetChanged();
+    }
+
     public ProductAdapter(Context context, List<Product> productList, AddProductToChartListener listener) {
         this.context = context;
         this.productList = productList;
