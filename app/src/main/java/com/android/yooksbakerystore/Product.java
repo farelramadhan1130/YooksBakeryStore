@@ -1,6 +1,9 @@
 package com.android.yooksbakerystore;
 
-public class Product {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Product implements Parcelable {
     private int id_produk;
     private int id_kategori;
     private int id_supplier;
@@ -66,7 +69,36 @@ public class Product {
         return stok;
     }
 
-    // Metode getter lainnya...
+    // Implementasi Parcelable
+    protected Product(Parcel in) {
+        nama = in.readString();
+        harga_jual = in.readInt();
+        jumlah = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(nama);
+        dest.writeInt(harga_jual);
+        dest.writeInt(jumlah);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 }
 
 

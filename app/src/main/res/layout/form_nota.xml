@@ -39,6 +39,28 @@
         android:padding="10dp"
         android:textColor="@android:color/black" />
 
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="10dp">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="ID Pemesanan :"-->
+<!--            android:textColor="@android:color/black"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/text_id_pemesanan"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:textColor="@android:color/black" />-->
+
+<!--    </LinearLayout>-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,29 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ID Pemesanan :"
-            android:textColor="@android:color/black"/>
-
-        <TextView
-            android:id="@+id/text_id_pemesanan"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@android:color/black" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Nama Pelanggan :"
+            android:text="Nama Pelanggan              :"
             android:textColor="@android:color/black"/>
 
         <TextView
@@ -93,7 +93,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="No. Telepon :"
+            android:text="No. Telepon                       :"
             android:textColor="@android:color/black"/>
 
         <TextView
@@ -115,11 +115,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tanggal Pemesanan :"
+            android:text="Tanggal Pemesanan        :"
             android:textColor="@android:color/black"/>
 
         <TextView
-            android:id="@+id/text_tanggal_pemesanan"
+                android:id="@+id/text_tanggal_pemesanan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -137,7 +137,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tanggal Pengambilan :"
+            android:text="Tanggal Pengambilan     :"
             android:textColor="@android:color/black"/>
 
         <TextView
@@ -161,7 +161,8 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="*">
+        android:stretchColumns="*"
+        android:id="@+id/tabel_roti">
 
     <!-- Header Tabel -->
     <TableRow
@@ -195,13 +196,6 @@
             android:gravity="center"
             android:textColor="@android:color/black"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Subtotal"
-            android:gravity="center"
-            android:textColor="@android:color/black"/>
     </TableRow>
 
     <!-- Data Pemesanan -->
@@ -214,6 +208,7 @@
         android:layout_marginRight="8dp">
 
         <TextView
+            android:id="@+id/tabel_nama_roti"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -221,6 +216,7 @@
             android:textColor="@android:color/black"/>
 
         <TextView
+            android:id="@+id/tabel_harga_roti"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -229,6 +225,7 @@
             android:textColor="@android:color/black"/>
 
         <TextView
+            android:id="@+id/tabel_jumlah_roti"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -236,13 +233,6 @@
             android:gravity="center"
             android:textColor="@android:color/black"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="10000"
-            android:gravity="center"
-            android:textColor="@android:color/black"/>
     </TableRow>
 
     <!-- Tambahkan baris tambahan sesuai dengan jumlah pemesanan -->
@@ -259,19 +249,26 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
+        android:layout_weight="5"
         android:text="Total :"
         android:textColor="@android:color/black" />
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Rp. "
+            android:gravity="right"
+            android:textColor="@android:color/black" />
+
     <TextView
-        android:id="@+id/tod"
+        android:id="@+id/tabel_subtotal_roti"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:text="Rp. 10,000"
+        android:text="10,000"
         android:textColor="@android:color/black"
-        android:gravity="end"
-        android:layout_marginRight="15dp"/>
+        android:gravity="center" />
     </TableRow>
     </TableLayout>
 

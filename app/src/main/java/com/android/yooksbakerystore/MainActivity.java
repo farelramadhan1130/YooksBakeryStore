@@ -18,6 +18,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Base64;
@@ -75,6 +76,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements AddProductToChartListener, CardChartAdapter.UpdateTotalHargaListener {
 
     List<Product> productList = new ArrayList<>();
+    List<Product> selectedProducts = new ArrayList<>();
     FloatingActionButton fab;
     DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
@@ -89,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
     public CardChartAdapter cardChartAdapter;
     private TextView textTotalValue;
     private static final int PICK_IMAGE_REQUEST = 1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                 // Mendapatkan id user dari sharedPreferences
                 SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                 int id_user = sharedPreferences.getInt("id_user", 0);
+                String nama_user = sharedPreferences.getString("nama_user", "");
 
                 // Mendapatkan tanggal penjualan saat ini
                 Calendar calendar = Calendar.getInstance();
@@ -232,6 +234,11 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                 String bukti = text_uploaded_file_name.getText().toString();
                 String metode_pembayaran = spinner_bank_account.getSelectedItem().toString();
 
+                // Membuat daftar produk
+                ArrayList<Product> productList = new ArrayList<>(selectedProducts);
+                // Navigasi ke NotaActivity dengan mengirim daftar produk
+                navigateToNotaActivity(productList);
+
                 // Lakukan proses posting data ke server
                 // Ganti bagian ini dengan kode untuk mengirim data ke server Anda
                 // Misalnya, menggunakan metode dari kelas MyServerRequest
@@ -242,11 +249,15 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                         // Proses berhasil
                         Toast.makeText(MainActivity.this, "Data terkirim ke server", Toast.LENGTH_SHORT).show();
 
-                        // Lakukan tindakan setelah posting data berhasil, misalnya:
-                        // - Menampilkan notifikasi atau pesan sukses
                         // - Mengganti tampilan atau memuat halaman baru
-
                         Intent intent = new Intent(MainActivity.this, NotaActivity.class);
+
+                        intent.putExtra("nama_user", nama_user);
+                        intent.putExtra("nomer_telp", nomer_telp);
+                        intent.putExtra("tanggal_penjualan", tanggal_penjualan);
+                        intent.putExtra("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
+                        intent.putExtra("total_penjualan", total_penjualan);
+
                         startActivity(intent);
                     }
                 }, new Response.ErrorListener() {
@@ -391,6 +402,9 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         // Menampilkan hasil pemilihan data
         if (produkDitambahkan != null) {
             produkDitambahkan.setJumlah(produkDitambahkan.getJumlah()+1);
+            if (!selectedProducts.contains(product)) {
+                selectedProducts.add(product);
+            }
         } else {
             productList.add(product); // Tambahkan produk ke list
 
@@ -415,5 +429,12 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         }
 
         textTotalValue.setText("Rp " + totalHarga);
+    }
+
+    // Mengirimkan Data Produk Ke Nota Activity
+    private void navigateToNotaActivity(ArrayList<Product> productList) {
+        Intent intent = new Intent(MainActivity.this, NotaActivity.class);
+        intent.putParcelableArrayListExtra("productList", productList);
+        startActivity(intent);
     }
 }

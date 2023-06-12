@@ -63,12 +63,13 @@
                                     // response dari server jika login berhasil
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putBoolean("isLoggedIn", true);
-                                    editor.apply();
+//                                    editor.apply();
                                     // Menyimpan ID user ke dalam SharedPreference
                                     editor.putInt("userId", jsonResponse.getInt("id_user"));
+                                    // Simpan nama pengguna ke dalam SharedPreference
+                                    editor.putString("username", jsonResponse.getString("nama_user"));
+
                                     editor.apply();
-                                    // Mengambil ID pengguna dari SharedPreferences
-                                    String userId = sharedPreferences.getString("userId", "");
 
                                     Intent intent = new Intent(context, SplashScreenActivity.class);
                                     context.startActivity(intent);
