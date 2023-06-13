@@ -16,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
     private EditText etUsername, etPassword;
     private TextView textRegister;
@@ -59,20 +62,33 @@ public class LoginActivity extends AppCompatActivity {
                     serverRequest.login(email_user, password_user, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            // Respon berhasil diterima, lakukan aksi yang diperlukan
-                            Toast.makeText(LoginActivity.this, "Login berhasil", Toast.LENGTH_SHORT).show();
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
+                                if (success) {
+                                    JSONObject data = jsonResponse.getJSONObject("data");
+                                    int userId = data.getInt("id");
+                                    String username = data.getString("nama_user");
 
-                            // Set nilai shared preferences isLoggedIn menjadi true
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean("isLoggedIn", true);
-                            editor.putInt("userId", Integer.parseInt(response));// Simpan ID user ke dalam SharedPreference
-                            editor.putString("username", String.valueOf(response));
-                            editor.apply();
+                                    // Set nilai shared preferences isLoggedIn menjadi true
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putBoolean("isLoggedIn", true);
+                                    editor.putInt("userId", userId);
+                                    editor.putString("username", username);
+                                    editor.apply();
 
-                            // Arahkan ke halaman utama (HomeActivity)
-                            Intent intent = new Intent(LoginActivity.this, SplashScreenActivity.class);
-                            startActivity(intent);
-                            finish(); // Tutup activity ini agar pengguna tidak dapat kembali ke halaman login
+                                    Toast.makeText(LoginActivity.this, "Login berhasil", Toast.LENGTH_SHORT).show();
+
+                                    // Arahkan ke halaman utama (HomeActivity)
+                                    Intent intent = new Intent(LoginActivity.this, SplashScreenActivity.class);
+                                    startActivity(intent);
+                                    finish(); // Tutup activity ini agar pengguna tidak dapat kembali ke halaman login
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Login gagal", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }, new Response.ErrorListener() {
                         @Override
@@ -80,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Terjadi Kesalahan" + error.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
+
                 }
             });
         }

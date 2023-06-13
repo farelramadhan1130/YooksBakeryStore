@@ -27,7 +27,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="32dp"
-                    android:text="Farel Ramadhan"
                     android:textColor="@color/Orange"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -46,12 +45,12 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="58dp"
-                    android:layout_height="57dp"
+                    android:layout_width="68dp"
+                    android:layout_height="68dp"
                     android:layout_marginEnd="32dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView"
-                    tools:src="@tools:sample/avatars" />
+                    tools:src="@drawable/usericon" />
 
                 <EditText
                     android:id="@+id/search"

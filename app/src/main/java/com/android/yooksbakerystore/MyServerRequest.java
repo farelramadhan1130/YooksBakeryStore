@@ -61,16 +61,19 @@
                                 boolean success = jsonResponse.getBoolean("success");
                                 if (success) {
                                     // response dari server jika login berhasil
+                                    JSONObject data = jsonResponse.getJSONObject("data");
+                                    int userId = data.getInt("id");
+                                    String username = data.getString("nama_user");
+
+                                    // response dari server jika login berhasil
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putBoolean("isLoggedIn", true);
-//                                    editor.apply();
-                                    // Menyimpan ID user ke dalam SharedPreference
-                                    editor.putInt("userId", jsonResponse.getInt("id_user"));
-                                    // Simpan nama pengguna ke dalam SharedPreference
-                                    editor.putString("username", jsonResponse.getString("nama_user"));
+                                    editor.putInt("userId", userId);
+                                    editor.putString("username", username);
 
                                     editor.apply();
-
+                                    // response dari server jika login Berhasil
+                                    Toast.makeText(context, "Login Berhasil", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(context, SplashScreenActivity.class);
                                     context.startActivity(intent);
                                 } else {

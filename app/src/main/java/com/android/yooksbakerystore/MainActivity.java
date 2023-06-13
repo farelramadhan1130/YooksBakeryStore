@@ -212,8 +212,8 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
 
                 // Mendapatkan id user dari sharedPreferences
                 SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                int id_user = sharedPreferences.getInt("id_user", 0);
-                String nama_user = sharedPreferences.getString("nama_user", "");
+                int id_user = sharedPreferences.getInt("userId", 0);
+                String nama_user = sharedPreferences.getString("username", "");
 
                 // Mendapatkan tanggal penjualan saat ini
                 Calendar calendar = Calendar.getInstance();

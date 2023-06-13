@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -49,6 +50,9 @@ public class LibraryFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("isLoggedIn", false);
                 editor.apply();
+
+                // Menampilkan notifikasi "Anda Telah Logout!"
+                Toast.makeText(getActivity(), "Anda Telah Logout!", Toast.LENGTH_SHORT).show();
 
                 // Mengarahkan ke halaman LoginActivity
                 Intent intent = new Intent(getActivity(), LoginActivity.class);

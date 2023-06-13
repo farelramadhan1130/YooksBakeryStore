@@ -1,7 +1,9 @@
 package com.android.yooksbakerystore;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -49,6 +52,13 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         EditText research = view.findViewById(R.id.search);
+        TextView user = view.findViewById(R.id.textView);
+        // Mendapatkan nama pengguna dari SharedPreferences
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String namaUser = sharedPreferences.getString("username", "");
+        // Menampilkan nama pengguna pada TextView
+        user.setText(namaUser);
+
         recyclerView = view.findViewById(R.id.menu_roti);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 

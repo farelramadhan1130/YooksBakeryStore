@@ -76,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
                         // Tanggapan dari server jika pendaftaran berhasil
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                         startActivity(intent);
-                        Toast.makeText(RegisterActivity.this, response, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Register Berhasil Silahkan Login!", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
