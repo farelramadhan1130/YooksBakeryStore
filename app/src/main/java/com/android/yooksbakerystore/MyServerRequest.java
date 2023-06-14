@@ -21,27 +21,15 @@
 
     public class MyServerRequest {
         private static final String TAG = "MyServerRequest";
+        private static final String CHECKOUT_URL = "http://192.168.1.4:8000/api/checkout";
         private final Context context;
         private final RequestQueue requestQueue;
         private SharedPreferences sharedPreferences;
-        private CheckoutListener checkoutListener;
 
         public MyServerRequest(Context context) {
             this.context = context;
             this.requestQueue = Volley.newRequestQueue(context);
             this.sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        }
-
-        // Menambahkan metode checkout ke dalam kelas MyServerRequest
-        public interface CheckoutListener {
-            void onCheckout(String idToko, String tanggalPenjualan, String tanggalAmbilPenjualan, int totalPenjualan, String metodePembayaran, String bukti);
-        }
-
-        // Menambahkan interface ServerCallback
-        public interface ServerCallback {
-            void onSuccess(String response);
-
-            void onError(String error);
         }
 
         public void login(String email, String password, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
@@ -106,11 +94,9 @@
         }
 
         public void checkout(int id_user, int id_toko, String nomer_telp, String tanggal_penjualan, String tanggal_ambil_penjualan, String total_penjualan, String metode_pembayaran, String bukti, String status_pesanan, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
-            // URL endpoint untuk checkout
-            String url = "http://192.168.1.4:8000/api/checkout";
 
             // Membuat objek StringRequest untuk melakukan request POST
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, CHECKOUT_URL,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -135,7 +121,7 @@
                     params.put("id_user", String.valueOf(id_user));
                     params.put("id_toko", String.valueOf(id_toko));
                     params.put("status_pesanan", String.valueOf(status_pesanan));
-//                    params.put("telepon_user", nomer_telp);
+                    params.put("telepon_user", nomer_telp);
                     params.put("tanggal_penjualan", tanggal_penjualan);
                     params.put("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
                     params.put("total_penjualan", String.valueOf(total_penjualan));

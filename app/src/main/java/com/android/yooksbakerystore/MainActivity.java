@@ -154,14 +154,6 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
             }
         });
 
-        btn_upload_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chooseImage();
-                openImagePicker();
-            }
-        });
-
         // Button Add to Chart di ProductAdapter
         ProductAdapter productAdapter = new ProductAdapter(MainActivity.this, productList, this);
         productAdapter.setAddProductToChartListener(MainActivity.this);
@@ -243,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                 // Ganti bagian ini dengan kode untuk mengirim data ke server Anda
                 // Misalnya, menggunakan metode dari kelas MyServerRequest
                 MyServerRequest myServerRequest = new MyServerRequest(MainActivity.this);
-                myServerRequest.checkout(id_user, id_toko, String.valueOf(nomer_telp), tanggal_penjualan, tanggal_ambil_penjualan, total_penjualan, metode_pembayaran, bukti, status_pesanan, new Response.Listener<String>() {
+                myServerRequest.checkout(id_user, id_toko, nomer_telp, tanggal_penjualan, tanggal_ambil_penjualan, total_penjualan, metode_pembayaran, bukti, status_pesanan, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // Proses berhasil
@@ -287,15 +279,6 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
-    // Implementasikan method berikut pada saat pengguna mengklik tombol untuk memilih foto
-    private void chooseImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -316,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                     .build();
 
             Request.Builder requestBuilder = new Request.Builder()
-                    .url("http://192.168.1.4:8000/asset/image/image-admin/bukti/")
+                    .url("http://192.168.1.4:8000/asset/image/image-admin/bukti")
                     .post(requestBody);
 
             Request request = requestBuilder.build();
