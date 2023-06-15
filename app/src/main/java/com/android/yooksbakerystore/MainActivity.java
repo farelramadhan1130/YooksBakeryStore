@@ -45,7 +45,6 @@ import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import androidx.appcompat.widget.Toolbar;
@@ -55,18 +54,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -78,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
 
     List<Product> productList = new ArrayList<>();
     List<Product> selectedProducts = new ArrayList<>();
+    private static final String CHECKOUT_URL = "http://192.168.1.4:8000/api/checkout";
     FloatingActionButton fab;
     DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
@@ -201,54 +207,62 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                 startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
             }
         });
-
         btn_checkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Mendapatkan data dari user
+                checkout();
+            }
+        });
 
-                // Mendapatkan id user dari sharedPreferences
-                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                int id_user = sharedPreferences.getInt("userId", 0);
-                String nama_user = sharedPreferences.getString("username", "");
 
-                // Mendapatkan tanggal penjualan saat ini
-                Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String tanggal_penjualan = dateFormat.format(calendar.getTime());
+        updateTotalHarga();
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
 
-                // Lakukan proses pembaruan total harga
-                updateTotalHarga();
-                // Dapatkan nilai total harga dari textTotalValue
-                String total_penjualan = textTotalValue.getText().toString();
+    private void checkout() {
+        // Mendapatkan id user dari sharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        final int id_user = sharedPreferences.getInt("userId", 0);
+        final String nama_user = sharedPreferences.getString("username", "");
 
-                int id_toko = 1;
-                String status_pesanan = "Pending";
-                String nomer_telp = edit_phone_number.getText().toString();
-                String tanggal_ambil_penjualan = edit_pickup_date.getText().toString();
+        // Mendapatkan tanggal penjualan saat ini
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        final String tanggal_penjualan = dateFormat.format(calendar.getTime());
 
-                // Menyimpan Ke Database dan anu
-                String bukti = text_uploaded_file_name.getText().toString();
-                String metode_pembayaran = spinner_bank_account.getSelectedItem().toString();
+        // Lakukan proses pembaruan total harga
+        updateTotalHarga();
+        // Dapatkan nilai total harga dari textTotalValue
+        final String total_penjualan = textTotalValue.getText().toString();
 
-                // Membuat daftar produk
-                ArrayList<Product> productList = new ArrayList<>(selectedProducts);
-                // Navigasi ke NotaActivity dengan mengirim daftar produk
-                navigateToNotaActivity(productList);
+        final int id_toko = 1;
+        final String status_pesanan = "Pending";
+        final String nomer_telp = edit_phone_number.getText().toString();
+        final String tanggal_ambil_penjualan = edit_pickup_date.getText().toString();
+        final String metode_pembayaran = spinner_bank_account.getSelectedItem().toString();
 
-                // Lakukan proses posting data ke server
-                // Ganti bagian ini dengan kode untuk mengirim data ke server Anda
-                // Misalnya, menggunakan metode dari kelas MyServerRequest
-                MyServerRequest myServerRequest = new MyServerRequest(MainActivity.this);
-                myServerRequest.checkout(id_user, id_toko, nomer_telp, tanggal_penjualan, tanggal_ambil_penjualan, total_penjualan, metode_pembayaran, bukti, status_pesanan, new Response.Listener<String>() {
+        // Menyimpan Ke Database dan anu
+        final String bukti = text_uploaded_file_name.getText().toString();
+
+        // Membuat daftar produk
+        ArrayList<Product> productList = new ArrayList<>(selectedProducts);
+        // Navigasi ke NotaActivity dengan mengirim daftar produk
+        navigateToNotaActivity(productList);
+
+        // Mengirim request ke server menggunakan Volley dengan VolleyMultipartRequest
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, CHECKOUT_URL,
+                new Response.Listener<NetworkResponse>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(NetworkResponse response) {
                         // Proses berhasil
                         Toast.makeText(MainActivity.this, "Data terkirim ke server", Toast.LENGTH_SHORT).show();
 
                         // - Mengganti tampilan atau memuat halaman baru
                         Intent intent = new Intent(MainActivity.this, NotaActivity.class);
-
                         intent.putExtra("id_user", id_user);
                         intent.putExtra("id_toko", id_toko);
                         intent.putExtra("nama_user", nama_user);
@@ -261,26 +275,59 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
 
                         startActivity(intent);
                     }
-                }, new Response.ErrorListener() {
+                },
+                new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // Proses gagal
                         Toast.makeText(MainActivity.this, "Terjadi kesalahan: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                });
-
-                // Tutup dialog atau lakukan tindakan lain setelah klik tombol checkout
-                // dialog.dismiss();
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id_user", String.valueOf(id_user));
+                params.put("id_toko", String.valueOf(id_toko));
+                params.put("nomer_telp", nomer_telp);
+                params.put("tanggal_penjualan", tanggal_penjualan);
+                params.put("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
+                params.put("total_penjualan", total_penjualan);
+                params.put("metode_pembayaran", metode_pembayaran);
+                params.put("status_pesanan", status_pesanan);
+                return params;
             }
-        });
+            private byte[] getImageBytes() {
+                try {
+                    InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        byteArrayOutputStream.write(buffer, 0, bytesRead);
+                    }
+                    return byteArrayOutputStream.toByteArray();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
 
+            @Override
+            protected Map<String, VolleyMultipartRequest.DataPart> getByteData() {
+                Map<String, VolleyMultipartRequest.DataPart> params = new HashMap<>();
 
-        updateTotalHarga();
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+                // Menambahkan bukti (gambar) sebagai part dalam VolleyMultipartRequest
+                byte[] imageBytes = getImageBytes(); // Metode yang mengembalikan byte array dari gambar
+                VolleyMultipartRequest.DataPart dataPart = new VolleyMultipartRequest.DataPart("bukti.jpg", imageBytes, "image/jpeg");
+                params.put("bukti", dataPart);
+
+                return params;
+            }
+        };
+
+        // Tambahkan VolleyMultipartRequest ke antrian Volley
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(volleyMultipartRequest);
     }
 
     @Override
@@ -318,6 +365,8 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
 
         return fileName;
     }
+
+
 
     private void encodeBitmapImage(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

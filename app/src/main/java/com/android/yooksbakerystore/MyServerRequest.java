@@ -21,7 +21,6 @@
 
     public class MyServerRequest {
         private static final String TAG = "MyServerRequest";
-        private static final String CHECKOUT_URL = "http://192.168.1.12:8000/api/checkout";
         private final Context context;
         private final RequestQueue requestQueue;
         private SharedPreferences sharedPreferences;
@@ -34,7 +33,7 @@
 
         public void login(String email, String password, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
             // URL endpoint untuk login
-            String url = "http://192.168.1.12:8000/api/login";
+            String url = "http://192.168.1.4:8000/api/login";
 
             // membuat objek RequestQueue untuk mengirim request ke server
             RequestQueue queue = Volley.newRequestQueue(context);
@@ -91,47 +90,5 @@
 
             // menambahkan request ke dalam queue
             queue.add(stringRequest);
-        }
-
-        public void checkout(int id_user, int id_toko, String nomer_telp, String tanggal_penjualan, String tanggal_ambil_penjualan, String total_penjualan, String metode_pembayaran, String bukti, String status_pesanan, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
-
-            // Membuat objek StringRequest untuk melakukan request POST
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, CHECKOUT_URL,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Response dari server jika checkout berhasil
-                            if (successListener != null) {
-                                successListener.onResponse(response);
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Response dari server jika terjadi kesalahan pada request atau response dari server
-                            if (errorListener != null) {
-                                errorListener.onErrorResponse(error);
-                            }
-                        }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("id_user", String.valueOf(id_user));
-                    params.put("id_toko", String.valueOf(id_toko));
-                    params.put("status_pesanan", String.valueOf(status_pesanan));
-                    params.put("telepon_user", nomer_telp);
-                    params.put("tanggal_penjualan", tanggal_penjualan);
-                    params.put("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
-                    params.put("total_penjualan", String.valueOf(total_penjualan));
-                    params.put("metode_pembayaran", metode_pembayaran);
-                    params.put("bukti", bukti);
-                    return params;
-                }
-            };
-
-            // Menambahkan request ke dalam queue
-            requestQueue.add(stringRequest);
         }
     }
