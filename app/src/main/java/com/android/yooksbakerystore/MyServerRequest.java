@@ -21,7 +21,7 @@
 
     public class MyServerRequest {
         private static final String TAG = "MyServerRequest";
-        private static final String CHECKOUT_URL = "http://192.168.1.4:8000/api/checkout";
+        private static final String CHECKOUT_URL = "http://192.168.1.12:8000/api/checkout";
         private final Context context;
         private final RequestQueue requestQueue;
         private SharedPreferences sharedPreferences;
@@ -34,7 +34,7 @@
 
         public void login(String email, String password, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
             // URL endpoint untuk login
-            String url = "http://192.168.1.4:8000/api/login";
+            String url = "http://192.168.1.12:8000/api/login";
 
             // membuat objek RequestQueue untuk mengirim request ke server
             RequestQueue queue = Volley.newRequestQueue(context);

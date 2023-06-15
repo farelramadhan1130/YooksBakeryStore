@@ -14,6 +14,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
     public CardChartAdapter cardChartAdapter;
     private TextView textTotalValue;
     private static final int PICK_IMAGE_REQUEST = 1;
+    String encodeImageString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,7 +195,10 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         btn_upload_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openImagePicker();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
             }
         });
 
@@ -244,11 +249,15 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                         // - Mengganti tampilan atau memuat halaman baru
                         Intent intent = new Intent(MainActivity.this, NotaActivity.class);
 
+                        intent.putExtra("id_user", id_user);
+                        intent.putExtra("id_toko", id_toko);
                         intent.putExtra("nama_user", nama_user);
                         intent.putExtra("nomer_telp", nomer_telp);
                         intent.putExtra("tanggal_penjualan", tanggal_penjualan);
                         intent.putExtra("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
                         intent.putExtra("total_penjualan", total_penjualan);
+                        intent.putExtra("bukti", bukti);
+                        intent.putExtra("status_pesanan", status_pesanan);
 
                         startActivity(intent);
                     }
@@ -274,11 +283,6 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    private void openImagePicker() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -286,43 +290,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             String fileName = getFileName(imageUri);
-            String filePath = getRealPathFromURI(imageUri); // Mendapatkan path absolut file dari Uri
             text_uploaded_file_name.setText(fileName);
-            // Lakukan operasi upload file ke server atau simpan file di direktori tujuan
-            // Kirim file menggunakan OkHttp
-            OkHttpClient client = new OkHttpClient();
-
-            File file = new File(filePath);
-            RequestBody requestBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("foto", file.getName(), RequestBody.create(MediaType.parse("image/*"), file))
-                    .build();
-
-            Request.Builder requestBuilder = new Request.Builder()
-                    .url("http://192.168.1.4:8000/asset/image/image-admin/bukti")
-                    .post(requestBody);
-
-            Request request = requestBuilder.build();
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    // Tangani kegagalan pengiriman
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                    if (response.code() == 200) {
-                        // Respons berhasil diterima
-                        String responseData = response.body().string();
-                        // Lakukan tindakan yang sesuai dengan respons
-                    } else {
-                        // Respons tidak berhasil diterima
-                        // Tangani kesalahan respons
-                    }
-                    response.close();
-                }
-            });
         }
     }
 
@@ -351,19 +319,11 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         return fileName;
     }
 
-    // Metode untuk mendapatkan path absolut file dari Uri
-    private String getRealPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor == null) {
-            return contentUri.getPath();
-        } else {
-            cursor.moveToFirst();
-            int columnIdx = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            String filePath = cursor.getString(columnIdx);
-            cursor.close();
-            return filePath;
-        }
+    private void encodeBitmapImage(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] bytesofimage = byteArrayOutputStream.toByteArray();
+        encodeImageString = Base64.encodeToString(bytesofimage, Base64.DEFAULT);
     }
 
     // About Product
