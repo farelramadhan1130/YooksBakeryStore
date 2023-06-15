@@ -1,5 +1,7 @@
 package com.android.yooksbakerystore;
 
+import android.graphics.Bitmap;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -7,8 +9,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +28,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
     private Response.ErrorListener mErrorListener;
     private Map<String, String> mHeaders;
     private Map<String, DataPart> mByteData;
+    private Map<String, String> mParams;
 
     public VolleyMultipartRequest(int method, String url,
                                   Response.Listener<NetworkResponse> listener,
@@ -47,6 +55,13 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
 
         try {
             // Add string params
+            if (mParams != null && !mParams.isEmpty()) {
+                for (Map.Entry<String, String> entry : mParams.entrySet()) {
+                    buildTextPart(dos, entry.getValue(), entry.getKey());
+                }
+            }
+
+            // Add byte data
             if (mByteData != null && !mByteData.isEmpty()) {
                 for (Map.Entry<String, DataPart> entry : mByteData.entrySet()) {
                     buildDataPart(dos, entry.getValue(), entry.getKey());
@@ -63,6 +78,14 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
         return null;
     }
 
+    private void buildTextPart(DataOutputStream dataOutputStream, String value, String inputName) throws IOException {
+        dataOutputStream.writeBytes("--" + boundary + lineEnd);
+        dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + inputName + "\"" + lineEnd);
+        dataOutputStream.writeBytes("Content-Type: text/plain; charset=UTF-8" + lineEnd);
+        dataOutputStream.writeBytes(lineEnd);
+        dataOutputStream.writeBytes(value + lineEnd);
+    }
+
     private void buildDataPart(DataOutputStream dataOutputStream, DataPart dataPart, String inputName) throws IOException {
         dataOutputStream.writeBytes("--" + boundary + lineEnd);
         dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" +
@@ -75,6 +98,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
         dataOutputStream.write(dataPart.getContent());
         dataOutputStream.writeBytes(lineEnd);
     }
+
 
     @Override
     protected Response<NetworkResponse> parseNetworkResponse(NetworkResponse response) {
@@ -92,23 +116,33 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
     }
 
     // Metode getByteData untuk menambahkan data byte ke permintaan multipart
-    protected Map<String, VolleyMultipartRequest.DataPart> getByteData() throws AuthFailureError {
+    protected Map<String, DataPart> getByteData() throws AuthFailureError {
         return mByteData;
+    }
+
+    // Metode getParams untuk menambahkan data teks ke permintaan multipart
+    protected Map<String, String> getParams() throws AuthFailureError {
+        return mParams;
+    }
+
+    // Metode setParams untuk mengatur data teks
+    public void setParams(Map<String, String> params) {
+        mParams = params;
     }
 
     public static class DataPart {
         private String fileName;
-        private byte[] content;
+        private File file;
         private String type;
 
-        public DataPart(String fileName, byte[] content) {
+        public DataPart(String fileName, File file) {
             this.fileName = fileName;
-            this.content = content;
+            this.file = file;
         }
 
-        public DataPart(String fileName, byte[] content, String type) {
+        public DataPart(String fileName, File file, String type) {
             this.fileName = fileName;
-            this.content = content;
+            this.file = file;
             this.type = type;
         }
 
@@ -116,8 +150,21 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
             return fileName;
         }
 
-        public byte[] getContent() {
-            return content;
+        public byte[] getContent() throws IOException {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            FileInputStream inputStream = new FileInputStream(file);
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            inputStream.close();
+            outputStream.flush();
+            outputStream.close();
+
+            return outputStream.toByteArray();
         }
 
         public String getType() {

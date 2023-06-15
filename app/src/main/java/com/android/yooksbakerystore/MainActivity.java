@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -70,8 +71,10 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -246,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
         final String metode_pembayaran = spinner_bank_account.getSelectedItem().toString();
 
         // Menyimpan Ke Database dan anu
-        final String bukti = text_uploaded_file_name.getText().toString();
+//        final String bukti = text_uploaded_file_name.getText().toString();
 
         // Membuat daftar produk
         ArrayList<Product> productList = new ArrayList<>(selectedProducts);
@@ -270,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                         intent.putExtra("tanggal_penjualan", tanggal_penjualan);
                         intent.putExtra("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
                         intent.putExtra("total_penjualan", total_penjualan);
-                        intent.putExtra("bukti", bukti);
+//                        intent.putExtra("bukti", bukti);
                         intent.putExtra("status_pesanan", status_pesanan);
 
                         startActivity(intent);
@@ -288,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                 Map<String, String> params = new HashMap<>();
                 params.put("id_user", String.valueOf(id_user));
                 params.put("id_toko", String.valueOf(id_toko));
-                params.put("nomer_telp", nomer_telp);
+//                params.put("nomer_telp", nomer_telp);
                 params.put("tanggal_penjualan", tanggal_penjualan);
                 params.put("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
                 params.put("total_penjualan", total_penjualan);
@@ -296,30 +299,22 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
                 params.put("status_pesanan", status_pesanan);
                 return params;
             }
-            private byte[] getImageBytes() {
-                try {
-                    InputStream inputStream = getContentResolver().openInputStream(imageUri);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        byteArrayOutputStream.write(buffer, 0, bytesRead);
-                    }
-                    return byteArrayOutputStream.toByteArray();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
 
             @Override
-            protected Map<String, VolleyMultipartRequest.DataPart> getByteData() {
+            protected Map<String, VolleyMultipartRequest.DataPart> getByteData() throws AuthFailureError {
                 Map<String, VolleyMultipartRequest.DataPart> params = new HashMap<>();
 
-                // Menambahkan bukti (gambar) sebagai part dalam VolleyMultipartRequest
-                byte[] imageBytes = getImageBytes(); // Metode yang mengembalikan byte array dari gambar
-                VolleyMultipartRequest.DataPart dataPart = new VolleyMultipartRequest.DataPart("bukti.jpg", imageBytes, "image/jpeg");
-                params.put("bukti", dataPart);
+                // Deklarasikan variabel 'bitmap' sebelumnya
+                Bitmap bitmap = null;
+
+                // Ubah objek bitmap ke dalam file menggunakan metode bitmapToFile
+                File imageFile = bitmapToFile(bitmap);
+
+                // Tambahkan file sebagai bagian dari permintaan multipart
+                if (imageFile != null) {
+                    VolleyMultipartRequest.DataPart dataPart = new VolleyMultipartRequest.DataPart("bukti.jpg", imageFile, "image/jpeg");
+                    params.put("bukti", dataPart);
+                }
 
                 return params;
             }
@@ -338,8 +333,42 @@ public class MainActivity extends AppCompatActivity implements AddProductToChart
             imageUri = data.getData();
             String fileName = getFileName(imageUri);
             text_uploaded_file_name.setText(fileName);
+
+            // Mengubah URI menjadi objek Bitmap
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                // Gunakan objek bitmap sesuai kebutuhan Anda
+                // Misalnya, tampilkan di ImageView:
+                // imageView.setImageBitmap(bitmap);
+
+                // Jangan lupa menutup InputStream setelah digunakan
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+    private File bitmapToFile(Bitmap bitmap) {
+        try {
+            // Membuat file sementara di direktori cache aplikasi
+            File file = new File(getCacheDir(), "temp_image.jpg");
+
+            // Mengompresi bitmap ke dalam file JPEG menggunakan OutputStream
+            OutputStream outputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     private String getFileName(Uri uri) {
         String fileName = null;
