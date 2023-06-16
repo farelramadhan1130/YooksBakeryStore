@@ -26,6 +26,7 @@ public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.View
         this.productList = productList;
         this.context = context;
         this.updateTotalHargaListener = updateTotalHargaListener;
+        updateTotalHarga();
     }
 
     @NonNull
@@ -43,7 +44,7 @@ public class CardChartAdapter extends RecyclerView.Adapter<CardChartAdapter.View
         holder.hargaProduk.setText("Rp " + product.getHarga_jual());
         holder.jumlahRoti.setText(String.valueOf(product.getJumlah()));
 
-        String imageUrl = "http://192.168.1.4:8000/asset/image/image-admin/produk/" + product.getFoto_produk();
+        String imageUrl = "http://192.168.1.6:8000/asset/image/image-admin/produk/" + product.getFoto_produk();
 //        Glide.with(context)
 //                .load(imageUrl)
 //                .into(holder.fotoProduk);

@@ -33,7 +33,7 @@
 
         public void login(String email, String password, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
             // URL endpoint untuk login
-            String url = "http://192.168.1.4:8000/api/login";
+            String url = "http://192.168.1.6:8000/api/login";
 
             // membuat objek RequestQueue untuk mengirim request ke server
             RequestQueue queue = Volley.newRequestQueue(context);
