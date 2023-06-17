@@ -101,13 +101,14 @@ public class HomeFragment extends Fragment implements AddProductToChartListener 
                                 int idSupplier = dataObject.getInt("id_supplier");
                                 int idToko = dataObject.getInt("id_toko");
                                 int hargaJual = dataObject.getInt("jual_produk");
+                                int biayaProduk = dataObject.getInt("biaya_produk");
                                 int hargaCoret = dataObject.getInt("harga_coret");
                                 int stok = dataObject.getInt("stock_produk");
                                 String nama = dataObject.getString("nama_produk");
                                 String deskripsiProduk = dataObject.getString("keterangan_produk");
                                 String fotoProduk = dataObject.getString("foto_produk");
 
-                                Product product = new Product(idProduk, idKategori, idSupplier, idToko, hargaJual, hargaCoret, stok, nama, deskripsiProduk, fotoProduk);
+                                Product product = new Product(idProduk, idKategori, idSupplier, idToko, hargaJual, biayaProduk, hargaCoret, stok, nama, deskripsiProduk, fotoProduk);
                                 productList.add(product);
                             }
                             productAdapter.notifyDataSetChanged();

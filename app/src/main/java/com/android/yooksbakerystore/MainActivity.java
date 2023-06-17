@@ -109,10 +109,10 @@
         private static final int PICK_IMAGE_REQUEST = 1;
         Bitmap bitmap;
         String encodeImageString;
-        int biaya_produksi = 0;
-        int harga_jual = 0;
+        int biaya_produk = 0;
+        int harga_produk = 0;
         String nama_produk = "";
-        int jumlah = 0;
+        int jumlah_produk = 0;
         int total_harga = 0;
         int id_produk = 0;
         private Calendar calendar;
@@ -262,14 +262,28 @@
             // Dapatkan nilai total harga dari textTotalValue
             final String total_penjualan = String.valueOf(textTotalValue.getText());
 
+            final String metode_pembayaran = spinner_bank_account.getSelectedItem().toString();
             final String nomer_telp = edit_phone_number.getText().toString();
             final String tanggal_ambil_penjualan = this.tanggal_ambil_penjualan;
-            final String metode_pembayaran = spinner_bank_account.getSelectedItem().toString();
+            // Menambahkan validasi tanggal_ambil_penjualan
+            if (tanggal_ambil_penjualan == null || tanggal_ambil_penjualan.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Tanggal ambil penjualan belum dipilih", Toast.LENGTH_SHORT).show();
+                return; // Hentikan eksekusi checkout() jika tanggal_ambil_penjualan kosong
+            }
 
             // Membuat daftar produk
-            ArrayList<Product> productList = new ArrayList<>(selectedProducts);
+//            ArrayList<Product> productList = new ArrayList<>(selectedProducts);
+            // Membuat daftar produk
+            productList.clear();
+            productList.addAll(selectedProducts);
             // Navigasi ke NotaActivity dengan mengirim daftar produk
-            navigateToNotaActivity(productList);
+            navigateToNotaActivity((ArrayList<Product>) productList);
+            // Pemeriksaan null pada productList
+            if (productList == null) {
+                // Penanganan jika productList bernilai null
+                Toast.makeText(this, "Daftar Produk Kosong", Toast.LENGTH_SHORT).show();
+                return; // Menghentikan eksekusi lebih lanjut
+            }
 
             // Mengirim request ke server menggunakan Volley dengan VolleyMultipartRequest
             StringRequest stringRequest = new StringRequest(Request.Method.POST, CHECKOUT_URL,
@@ -286,7 +300,7 @@
                             intent.putExtra("nomer_telp", nomer_telp);
                             intent.putExtra("tanggal_penjualan", tanggal_penjualan);
                             intent.putExtra("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
-                            intent.putExtra("total_penjualan", total_penjualan);
+                            intent.putExtra("total_penjualan", total_harga);
 
                             // Menambahkan data produk ke dalam parameter request
                             for (int i = 0; i < productList.size(); i++) {
@@ -320,10 +334,10 @@
                     params.put("total_penjualan", String.valueOf(total_harga));
 
                     // Tambahan Buat Tabel Penjualan Produk
-                    params.put("biaya_produk", String.valueOf(biaya_produksi));
-                    params.put("harga_produk", String.valueOf(harga_jual));
+                    params.put("biaya_produk", String.valueOf(biaya_produk));
+                    params.put("harga_produk", String.valueOf(harga_produk));
                     params.put("nama_produk", nama_produk);
-                    params.put("jumlah_produk", String.valueOf(jumlah));
+                    params.put("jumlah_produk", String.valueOf(jumlah_produk));
                     params.put("id_produk", String.valueOf(id_produk));
                     return params;
                 }
@@ -417,9 +431,11 @@
 
             // Menampilkan hasil pemilihan data
             if (produkDitambahkan != null) {
-                produkDitambahkan.setJumlah(produkDitambahkan.getJumlah()+1);
-                if (!selectedProducts.contains(product)) {
-                    selectedProducts.add(product);
+                int jumlah_produk = produkDitambahkan.getJumlah() + 1;
+                produkDitambahkan.setJumlah(jumlah_produk);
+//                produkDitambahkan.setJumlah(produkDitambahkan.getJumlah()+1);
+                if (!selectedProducts.contains(produkDitambahkan)) {
+                    selectedProducts.add(produkDitambahkan);
                 }
             } else {
                 productList.add(product); // Tambahkan produk ke list
@@ -431,10 +447,10 @@
                 updateTotalHarga();
             }
             // Dapatkan informasi yang dibutuhkan
-            biaya_produksi = product.getHarga_produksi();
-            harga_jual = product.getHarga_jual();
+            biaya_produk = product.getHarga_produk();
+            harga_produk = product.getHarga_jual();
             nama_produk = product.getNama();
-            jumlah = product.getJumlah();
+            jumlah_produk = product.getJumlah();
             id_produk = product.getId_produk();
         }
 
@@ -463,28 +479,22 @@
         private void showDatePicker() {
             DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
                 @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    calendar.set(Calendar.YEAR, year);
-                    calendar.set(Calendar.MONTH, monthOfYear);
-                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                    // Simpan tanggal yang dipilih ke variabel tanggal_ambil_penjualan
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                    tanggal_ambil_penjualan = dateFormat.format(calendar.getTime());
-
-                    // Update text tanggal pada edit_pickup_date
-                    edit_pickup_date.setText(tanggal_ambil_penjualan);
+                public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+                    // Konversi tanggal yang dipilih menjadi string dengan format yang diinginkan
+                    String selectedDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                    tanggal_ambil_penjualan = selectedDate;
+                    edit_pickup_date.setText(selectedDate);
                 }
             };
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    this,
-                    dateSetListener,
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH)
-            );
-            datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()); // Batasi pemilihan tanggal hanya pada tanggal hari ini...
+            // Ambil tanggal saat ini
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            // Tampilkan DatePickerDialog
+            DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this, dateSetListener, year, month, day);
             datePickerDialog.show();
         }
     }

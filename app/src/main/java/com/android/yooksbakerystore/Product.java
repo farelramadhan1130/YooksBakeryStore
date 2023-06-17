@@ -9,7 +9,7 @@ public class Product implements Parcelable {
     private int id_supplier;
     private int id_toko;
     private int harga_jual;
-    private int biaya_produksi;
+    private int biaya_produk;
     private int harga_coret;
     private int stok;
     private String nama;
@@ -17,7 +17,7 @@ public class Product implements Parcelable {
     private String foto_produk;
     private int jumlah; // Tambahkan atribut jumlah
 
-    public Product(int id_produk, int id_kategori, int id_supplier, int id_toko, int harga_jual, int harga_coret, int stok, String nama, String deskripsi_produk, String foto_produk) {
+    public Product(int id_produk, int id_kategori, int id_supplier, int id_toko, int harga_jual, int biaya_produk,int harga_coret, int stok, String nama, String deskripsi_produk, String foto_produk) {
         this.id_produk = id_produk;
         this.id_kategori = id_kategori;
         this.id_supplier = id_supplier;
@@ -25,6 +25,7 @@ public class Product implements Parcelable {
         this.nama = nama;
         this.deskripsi_produk = deskripsi_produk;
         this.harga_jual = harga_jual;
+        this.biaya_produk = biaya_produk;
         this.harga_coret = harga_coret;
         this.stok = stok;
         this.foto_produk = foto_produk;
@@ -55,10 +56,8 @@ public class Product implements Parcelable {
         return foto_produk;
     }
     public int getHarga_jual() { return harga_jual; }
-    public int getHarga_produksi() { return biaya_produksi; }
-    public int getHarga_coret() {
-        return harga_coret;
-    }
+    public int getHarga_produk() { return biaya_produk; }
+    public int getHarga_coret() { return harga_coret; }
     public int getStok() {
         return stok;
     }

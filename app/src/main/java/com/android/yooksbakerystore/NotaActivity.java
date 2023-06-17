@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 public class NotaActivity extends AppCompatActivity {
 
+    private ArrayList<Product> productList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +30,7 @@ public class NotaActivity extends AppCompatActivity {
         String total_penjualan = getIntent().getStringExtra("total_penjualan");
 
         // Mendapatkan daftar produk yang dikirim dari MainActivity
-        ArrayList<Product> productList = getIntent().getParcelableArrayListExtra("productList");
+        productList = getIntent().getParcelableArrayListExtra("productList");
 
         // Menginisialisasi TextView dengan id text_nama_pelanggan
         TextView namaPelangganTextView = findViewById(R.id.text_nama_pelanggan);
@@ -50,33 +52,35 @@ public class NotaActivity extends AppCompatActivity {
         TableLayout tableLayout = findViewById(R.id.tabel_roti);
 
         // Loop melalui setiap produk dan membuat TableRow
-        for (Product product : productList) {
+        for (int i = 0; i < productList.size(); i++) {
+            Product product = productList.get(i);
+
             // Buat TableRow baru
             TableRow row = new TableRow(this);
 
             // Atur layout params untuk TableRow
-            TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
-                    TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT
+            TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT
             );
             row.setLayoutParams(layoutParams);
 
             // Tambahkan data produk ke dalam TableRow
             TextView namaTextView = new TextView(this);
             namaTextView.setText(product.getNama());
-            namaTextView.setId(R.id.tabel_nama_roti); // Set ID untuk TextView
+            namaTextView.setId(R.id.tabel_nama_roti + i); // Set ID untuk TextView
 
             TextView hargaTextView = new TextView(this);
             hargaTextView.setText(String.valueOf(product.getHarga_jual()));
-            hargaTextView.setId(R.id.tabel_harga_roti); // Set ID untuk TextView
+            hargaTextView.setId(R.id.tabel_harga_roti + i); // Set ID untuk TextView
 
             TextView jumlahTextView = new TextView(this);
             jumlahTextView.setText(String.valueOf(product.getJumlah()));
-            jumlahTextView.setId(R.id.tabel_jumlah_roti); // Set ID untuk TextView
+            jumlahTextView.setId(R.id.tabel_jumlah_roti + i); // Set ID untuk TextView
 
             TextView subtotalTextView = new TextView(this);
             subtotalTextView.setText(String.valueOf(product.getHarga_jual() * product.getJumlah()));
-            subtotalTextView.setId(R.id.tabel_subtotal_roti); // Set ID untuk TextView
+            subtotalTextView.setId(R.id.tabel_subtotal_roti + i); // Set ID untuk TextView
 
             // Tambahkan TextView ke dalam TableRow
             row.addView(namaTextView);
@@ -85,7 +89,7 @@ public class NotaActivity extends AppCompatActivity {
             row.addView(subtotalTextView);
 
             // Tambahkan TableRow ke dalam TableLayout
-            tableLayout.addView(row);
+            tableLayout.addView(row, layoutParams);
         }
     }
 }
