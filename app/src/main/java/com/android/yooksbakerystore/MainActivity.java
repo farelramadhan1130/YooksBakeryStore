@@ -109,6 +109,12 @@
         private static final int PICK_IMAGE_REQUEST = 1;
         Bitmap bitmap;
         String encodeImageString;
+        int biaya_produksi = 0;
+        int harga_jual = 0;
+        String nama_produk = "";
+        int jumlah = 0;
+        int total_harga = 0;
+        int id_produk = 0;
         private Calendar calendar;
         private String tanggal_ambil_penjualan;
 
@@ -305,12 +311,20 @@
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
                     String imageData = imageToString(bitmap);
+                    // Request Tabel Penjualan
                     params.put("id_user", String.valueOf(id_user));
                     params.put("tanggal_penjualan", tanggal_penjualan);
                     params.put("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
-                    params.put("total_penjualan", total_penjualan);
                     params.put("metode_pembayaran", metode_pembayaran);
                     params.put("bukti", imageData);
+                    params.put("total_penjualan", String.valueOf(total_harga));
+
+                    // Tambahan Buat Tabel Penjualan Produk
+                    params.put("biaya_produk", String.valueOf(biaya_produksi));
+                    params.put("harga_produk", String.valueOf(harga_jual));
+                    params.put("nama_produk", nama_produk);
+                    params.put("jumlah_produk", String.valueOf(jumlah));
+                    params.put("id_produk", String.valueOf(id_produk));
                     return params;
                 }
             };
@@ -416,6 +430,12 @@
                 // Hitung total harga
                 updateTotalHarga();
             }
+            // Dapatkan informasi yang dibutuhkan
+            biaya_produksi = product.getHarga_produksi();
+            harga_jual = product.getHarga_jual();
+            nama_produk = product.getNama();
+            jumlah = product.getJumlah();
+            id_produk = product.getId_produk();
         }
 
         @Override
@@ -427,9 +447,8 @@
         private void updateTotalHarga() {
             int totalHarga = 0;
             for (Product product : productList) {
-                totalHarga += product.getHarga_jual() * product.getJumlah();
+                total_harga = totalHarga += product.getHarga_jual() * product.getJumlah();
             }
-
             textTotalValue.setText("Rp " + totalHarga);
         }
 

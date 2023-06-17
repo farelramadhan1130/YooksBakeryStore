@@ -9,6 +9,7 @@ public class Product implements Parcelable {
     private int id_supplier;
     private int id_toko;
     private int harga_jual;
+    private int biaya_produksi;
     private int harga_coret;
     private int stok;
     private String nama;
@@ -31,9 +32,7 @@ public class Product implements Parcelable {
     }
 
     public int getJumlah() { return jumlah; }
-
     public void setJumlah(int jumlah) {this.jumlah = jumlah;}
-
     public int getId_produk() {
         return id_produk;
     }
@@ -46,25 +45,20 @@ public class Product implements Parcelable {
     public int getId_toko() {
         return id_toko;
     }
-
     public String getNama() {
         return nama;
     }
-
     public String getDeskripsi_produk() {
         return deskripsi_produk;
     }
-
     public String getFoto_produk() {
         return foto_produk;
     }
-
     public int getHarga_jual() { return harga_jual; }
-
+    public int getHarga_produksi() { return biaya_produksi; }
     public int getHarga_coret() {
         return harga_coret;
     }
-
     public int getStok() {
         return stok;
     }
