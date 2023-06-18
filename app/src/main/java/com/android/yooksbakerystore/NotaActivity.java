@@ -1,7 +1,12 @@
 package com.android.yooksbakerystore;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -12,10 +17,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NotaActivity extends AppCompatActivity {
 
-    private ArrayList<Product> productList;
+    private List<Product> productList;
     private ArrayList<Product> selectedProducts;
 
     @Override
@@ -32,8 +38,7 @@ public class NotaActivity extends AppCompatActivity {
 //        String total_penjualan = getIntent().getStringExtra("total_penjualan");
 
         // Mendapatkan daftar produk yang dikirim dari MainActivity
-        productList = getIntent().getParcelableArrayListExtra("productList");
-        selectedProducts = getIntent().getParcelableArrayListExtra("selectedProducts");
+        productList = (List<Product>) getIntent().getSerializableExtra("productList"); // Jika menggunakan Serializable
 
         // Menginisialisasi TextView dengan id text_nama_pelanggan
         TextView namaPelangganTextView = findViewById(R.id.text_nama_pelanggan);
@@ -54,6 +59,8 @@ public class NotaActivity extends AppCompatActivity {
         // Mendapatkan referensi ke TableLayout di layout
         TableLayout tableLayout = findViewById(R.id.tabel_roti);
 
+        int Total = 0;
+
         // Loop melalui setiap produk dan membuat TableRow
         for (int i = 0; i < productList.size(); i++) {
             Product product = productList.get(i);
@@ -71,19 +78,23 @@ public class NotaActivity extends AppCompatActivity {
             // Tambahkan data produk ke dalam TableRow
             TextView namaTextView = new TextView(this);
             namaTextView.setText(product.getNama());
-            namaTextView.setId(R.id.tabel_nama_roti + i); // Set ID untuk TextView
+            namaTextView.setTextColor(Color.BLACK);
 
             TextView hargaTextView = new TextView(this);
             hargaTextView.setText(String.valueOf(product.getHarga_jual()));
-            hargaTextView.setId(R.id.tabel_harga_roti + i); // Set ID untuk TextView
+            hargaTextView.setTextColor(Color.BLACK);
+            hargaTextView.setGravity(Gravity.CENTER);
 
             TextView jumlahTextView = new TextView(this);
             jumlahTextView.setText(String.valueOf(product.getJumlah()));
-            jumlahTextView.setId(R.id.tabel_jumlah_roti + i); // Set ID untuk TextView
+            jumlahTextView.setTextColor(Color.BLACK);
 
             TextView subtotalTextView = new TextView(this);
             subtotalTextView.setText(String.valueOf(product.getHarga_jual() * product.getJumlah()));
-            subtotalTextView.setId(R.id.tabel_subtotal_roti + i); // Set ID untuk TextView
+            subtotalTextView.setTextColor(Color.BLACK);
+            subtotalTextView.setGravity(Gravity.CENTER);
+
+            Total += (product.getHarga_jual() * product.getJumlah());
 
             // Tambahkan TextView ke dalam TableRow
             row.addView(namaTextView);
@@ -94,5 +105,40 @@ public class NotaActivity extends AppCompatActivity {
             // Tambahkan TableRow ke dalam TableLayout
             tableLayout.addView(row, layoutParams);
         }
+
+        TableRow row = new TableRow(this);
+
+        TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT
+        );
+        row.setLayoutParams(layoutParams);
+
+        // Tambahkan data produk ke dalam TableRow
+        TextView namaTextView = new TextView(this);
+        namaTextView.setText("Total");
+        namaTextView.setTextColor(Color.BLACK);
+
+        TextView hargaTextView = new TextView(this);
+        hargaTextView.setText("");
+        hargaTextView.setGravity(Gravity.CENTER);
+        hargaTextView.setTextColor(Color.BLACK);
+
+        TextView jumlahTextView = new TextView(this);
+        jumlahTextView.setText(":");
+        jumlahTextView.setTextColor(Color.BLACK);
+
+        TextView subtotalTextView = new TextView(this);
+        subtotalTextView.setText(String.valueOf(Total));
+        subtotalTextView.setGravity(Gravity.CENTER);
+        subtotalTextView.setTextColor(Color.BLACK);
+
+        row.addView(namaTextView);
+        row.addView(hargaTextView);
+        row.addView(jumlahTextView);
+        row.addView(subtotalTextView);
+
+        // Tambahkan TableRow ke dalam TableLayout
+        tableLayout.addView(row, layoutParams);
     }
 }

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -41,6 +42,10 @@ public class LibraryFragment extends Fragment {
 
         // Mendapatkan referensi button
         Button btnLogout = view.findViewById(R.id.btn_logout);
+        TextView name = view.findViewById(R.id.name);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String namaUser = sharedPreferences.getString("username", "");
+        name.setText(namaUser);
 
         // Menambahkan onClickListener
         btnLogout.setOnClickListener(new View.OnClickListener() {

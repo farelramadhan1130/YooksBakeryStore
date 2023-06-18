@@ -80,6 +80,7 @@
     import java.io.IOException;
     import java.io.InputStream;
     import java.io.OutputStream;
+    import java.io.Serializable;
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
     import java.util.Calendar;
@@ -217,7 +218,6 @@
             // Tambahkan LayoutManager
             recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
             recyclerView.setAdapter(cardChartAdapter);
-            Toast.makeText(this, String.valueOf(recyclerView.getAdapter().getItemCount()), Toast.LENGTH_SHORT).show();
 
             edit_pickup_date.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -276,8 +276,8 @@
             // Membuat daftar produk
 //            ArrayList<Product> productList = new ArrayList<>(selectedProducts);
             // Membuat daftar produk
-            productList.clear();
-            productList.addAll(selectedProducts);
+//            productList.clear();
+//            productList.addAll(selectedProducts);
             // Navigasi ke NotaActivity dengan mengirim daftar produk
             navigateToNotaActivity((ArrayList<Product>) productList);
             // Pemeriksaan null pada productList
@@ -303,6 +303,7 @@
                             intent.putExtra("tanggal_penjualan", tanggal_penjualan);
                             intent.putExtra("tanggal_ambil_penjualan", tanggal_ambil_penjualan);
                             intent.putExtra("total_penjualan", total_harga);
+                            intent.putExtra("productList", (Serializable)  productList);
 
                             // Menambahkan data produk ke dalam parameter request
 //                            for (int i = 0; i < productList.size(); i++) {

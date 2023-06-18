@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".NotaActivity">
 
     <TextView
@@ -13,14 +14,14 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:padding="10dp"
+android:layout_marginBottom="10dp"
         android:textColor="@android:color/black" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingBottom="10dp"
+        android:layout_marginBottom="10dp"
         android:text="Jalan Melon No. 5B, Kec. Patrang, Kab. Jember"
         android:textColor="@android:color/black" />
 
@@ -29,43 +30,23 @@
         android:layout_height="wrap_content"
         android:text="Telp. 083857726588"
         android:gravity="center"
-        android:paddingBottom="10dp"
+        android:layout_marginBottom="10dp"
         android:textColor="@android:color/black" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="=================================================="
-        android:padding="10dp"
+        android:text="================================================"
+        android:layout_marginBottom="10dp"
         android:textColor="@android:color/black" />
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:padding="10dp">-->
-
-<!--        <TextView-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="ID Pemesanan :"-->
-<!--            android:textColor="@android:color/black"/>-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/text_id_pemesanan"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:textColor="@android:color/black" />-->
-
-<!--    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_marginBottom="10dp"
+        >
 
         <TextView
             android:layout_width="0dp"
@@ -87,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:layout_width="0dp"
@@ -109,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:layout_width="0dp"
@@ -119,7 +100,7 @@
             android:textColor="@android:color/black"/>
 
         <TextView
-                android:id="@+id/text_tanggal_pemesanan"
+            android:id="@+id/text_tanggal_pemesanan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -131,7 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:layout_width="0dp"
@@ -152,8 +133,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="=================================================="
-        android:padding="10dp"
+        android:text="================================================"
+        android:layout_marginBottom="10dp"
         android:textColor="@android:color/black"/>
 
     <!-- Tambahkan tabel pemesanan menggunakan RecyclerView atau TableLayout sesuai kebutuhan -->
@@ -162,7 +143,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="*"
-        android:id="@+id/tabel_roti">
+        android:id="@+id/tabel_roti"
+        android:layout_marginBottom="10dp">
 
     <!-- Header Tabel -->
     <TableRow
@@ -196,99 +178,36 @@
             android:gravity="center"
             android:textColor="@android:color/black"/>
 
-    </TableRow>
-
-    <!-- Data Pemesanan -->
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
-
         <TextView
-            android:id="@+id/tabel_nama_roti"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Roti Coklat"
-            android:textColor="@android:color/black"/>
-
-        <TextView
-            android:id="@+id/tabel_harga_roti"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="5000"
-            android:gravity="center"
-            android:textColor="@android:color/black"/>
-
-        <TextView
-            android:id="@+id/tabel_jumlah_roti"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="2"
+            android:text="Subtotal"
             android:gravity="center"
             android:textColor="@android:color/black"/>
 
     </TableRow>
 
     <!-- Tambahkan baris tambahan sesuai dengan jumlah pemesanan -->
-
-    <!-- Total -->
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="5"
-        android:text="Total :"
-        android:textColor="@android:color/black" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Rp. "
-            android:gravity="right"
-            android:textColor="@android:color/black" />
-
-    <TextView
-        android:id="@+id/tabel_subtotal_roti"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:text="10,000"
-        android:textColor="@android:color/black"
-        android:gravity="center" />
-    </TableRow>
     </TableLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="=================================================="
-        android:padding="10dp"
+        android:text="================================================"
+        android:layout_marginBottom="10dp"
         android:textColor="@android:color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="0pt">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=" *Kami Akan Menghubungi Ketika Roti Sudah Dapat Diambil*"
+            android:layout_marginBottom="10dp"
             android:textStyle="italic"
             android:gravity="center"
             android:textColor="@android:color/black"/>
@@ -297,8 +216,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="2dp">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="match_parent"
