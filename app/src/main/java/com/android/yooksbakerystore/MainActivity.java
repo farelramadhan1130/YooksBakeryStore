@@ -203,6 +203,8 @@
 
             recyclerView = dialog.findViewById(R.id.card_charts);
 
+            // Tambahkan metode setAdapter() di sini
+            recyclerView.setAdapter(cardChartAdapter);
             textTotalValue = dialog.findViewById(R.id.text_total_value);
             edit_phone_number = dialog.findViewById(R.id.edit_phone_number);
             edit_pickup_date = dialog.findViewById(R.id.edit_pickup_date);
@@ -303,13 +305,13 @@
                             intent.putExtra("total_penjualan", total_harga);
 
                             // Menambahkan data produk ke dalam parameter request
-                            for (int i = 0; i < productList.size(); i++) {
-                                Product product = productList.get(i);
-                                intent.putExtra("produk[" + i + "][id_produk]", String.valueOf(product.getId_produk()));
-                                intent.putExtra("produk[" + i + "][nama_produk]", product.getNama());
-                                intent.putExtra("produk[" + i + "][harga_produk]", String.valueOf(product.getHarga_jual()));
-                                intent.putExtra("produk[" + i + "][jumlah_produk]", String.valueOf(product.getJumlah()));
-                            }
+//                            for (int i = 0; i < productList.size(); i++) {
+//                                Product product = productList.get(i);
+//                                intent.putExtra("produk[" + i + "][id_produk]", String.valueOf(product.getId_produk()));
+//                                intent.putExtra("produk[" + i + "][nama_produk]", product.getNama());
+//                                intent.putExtra("produk[" + i + "][harga_produk]", String.valueOf(product.getHarga_jual()));
+//                                intent.putExtra("produk[" + i + "][jumlah_produk]", String.valueOf(product.getJumlah()));
+//                            }
 
                             startActivity(intent);
                         }
@@ -406,13 +408,6 @@
             return fileName;
         }
 
-        private void encodeBitmapImage(Bitmap bitmap) {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] bytesofimage = byteArrayOutputStream.toByteArray();
-            encodeImageString = Base64.encodeToString(bytesofimage, Base64.DEFAULT);
-        }
-
         // About Product
         @Override
         public void onAddProductToChart(Product product) {
@@ -433,7 +428,6 @@
             if (produkDitambahkan != null) {
                 int jumlah_produk = produkDitambahkan.getJumlah() + 1;
                 produkDitambahkan.setJumlah(jumlah_produk);
-//                produkDitambahkan.setJumlah(produkDitambahkan.getJumlah()+1);
                 if (!selectedProducts.contains(produkDitambahkan)) {
                     selectedProducts.add(produkDitambahkan);
                 }
@@ -450,7 +444,6 @@
             biaya_produk = product.getHarga_produk();
             harga_produk = product.getHarga_jual();
             nama_produk = product.getNama();
-            jumlah_produk = product.getJumlah();
             id_produk = product.getId_produk();
         }
 
@@ -464,6 +457,7 @@
             int totalHarga = 0;
             for (Product product : productList) {
                 total_harga = totalHarga += product.getHarga_jual() * product.getJumlah();
+                jumlah_produk = product.getJumlah();
             }
             textTotalValue.setText("Rp " + totalHarga);
         }

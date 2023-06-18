@@ -95,7 +95,8 @@
                     android:layout_marginTop="8dp"
                     android:backgroundTint="#000000"
                     android:drawableStart="@drawable/baseline_date_range_24"
-                    android:hint="  Tanggal Pengambilan"
+                    android:drawablePadding="10dp"
+                    android:hint="Tanggal Pengambilan"
                     android:gravity="center_vertical"
                     android:inputType="date"
                     android:minHeight="48dp"
@@ -129,7 +130,7 @@
                         android:layout_marginBottom="8dp"
                         android:background="@color/Orange"
                         android:backgroundTint="@color/Orange"
-                        android:padding="4dp"
+                        android:padding="6dp"
                         android:text="Upload"
                         android:textColor="#000000" />
 

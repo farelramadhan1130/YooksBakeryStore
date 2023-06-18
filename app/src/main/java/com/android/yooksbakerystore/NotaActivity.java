@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class NotaActivity extends AppCompatActivity {
 
     private ArrayList<Product> productList;
+    private ArrayList<Product> selectedProducts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +24,16 @@ public class NotaActivity extends AppCompatActivity {
         setContentView(R.layout.form_nota);
 
         // Mendapatkan nilai id_pemesanan yang dikirim dari MainActivity
+//        String id_user = getIntent().getStringExtra("id_user");
         String nama_user = getIntent().getStringExtra("nama_user");
         String nomer_telp = getIntent().getStringExtra("nomer_telp");
         String tanggal_penjualan = getIntent().getStringExtra("tanggal_penjualan");
         String tanggal_ambil_penjualan = getIntent().getStringExtra("tanggal_ambil_penjualan");
-        String total_penjualan = getIntent().getStringExtra("total_penjualan");
+//        String total_penjualan = getIntent().getStringExtra("total_penjualan");
 
         // Mendapatkan daftar produk yang dikirim dari MainActivity
         productList = getIntent().getParcelableArrayListExtra("productList");
+        selectedProducts = getIntent().getParcelableArrayListExtra("selectedProducts");
 
         // Menginisialisasi TextView dengan id text_nama_pelanggan
         TextView namaPelangganTextView = findViewById(R.id.text_nama_pelanggan);
