@@ -8,26 +8,26 @@ public class Product implements Parcelable {
     private int id_kategori;
     private int id_supplier;
     private int id_toko;
-    private int harga_jual;
+    private int jual_produk;
     private int biaya_produk;
     private int harga_coret;
-    private int stok;
-    private String nama;
-    private String deskripsi_produk;
+    private int stock_produk;
+    private String nama_produk;
+    private String keterangan_produk ;
     private String foto_produk;
     private int jumlah; // Tambahkan atribut jumlah
 
-    public Product(int id_produk, int id_kategori, int id_supplier, int id_toko, int harga_jual, int biaya_produk,int harga_coret, int stok, String nama, String deskripsi_produk, String foto_produk) {
+    public Product(int id_produk, int id_kategori, int id_supplier, int id_toko, int jual_produk, int biaya_produk,int harga_coret, int stok, String nama_produk, String keterangan_produk , String foto_produk) {
         this.id_produk = id_produk;
         this.id_kategori = id_kategori;
         this.id_supplier = id_supplier;
         this.id_toko = id_toko;
-        this.nama = nama;
-        this.deskripsi_produk = deskripsi_produk;
-        this.harga_jual = harga_jual;
+        this.nama_produk = nama_produk;
+        this.keterangan_produk  = keterangan_produk ;
+        this.jual_produk = jual_produk;
         this.biaya_produk = biaya_produk;
         this.harga_coret = harga_coret;
-        this.stok = stok;
+        this.stock_produk = stok;
         this.foto_produk = foto_produk;
         this.jumlah = 1; // Set jumlah awal ke 1
     }
@@ -47,32 +47,32 @@ public class Product implements Parcelable {
         return id_toko;
     }
     public String getNama() {
-        return nama;
+        return nama_produk;
     }
     public String getDeskripsi_produk() {
-        return deskripsi_produk;
+        return keterangan_produk ;
     }
     public String getFoto_produk() {
         return foto_produk;
     }
-    public int getHarga_jual() { return harga_jual; }
+    public int getHarga_jual() { return jual_produk; }
     public int getHarga_produk() { return biaya_produk; }
     public int getHarga_coret() { return harga_coret; }
     public int getStok() {
-        return stok;
+        return stock_produk;
     }
 
     // Implementasi Parcelable
     protected Product(Parcel in) {
-        nama = in.readString();
-        harga_jual = in.readInt();
+        nama_produk = in.readString();
+        jual_produk = in.readInt();
         jumlah = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(nama);
-        dest.writeInt(harga_jual);
+        dest.writeString(nama_produk);
+        dest.writeInt(jual_produk);
         dest.writeInt(jumlah);
     }
 
