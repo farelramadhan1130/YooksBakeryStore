@@ -93,7 +93,7 @@
 
         List<Product> productList = new ArrayList<>();
         List<Product> selectedProducts = new ArrayList<>();
-        private static final String CHECKOUT_URL = "http://192.168.43.220:8000/api/checkout";
+        private static final String CHECKOUT_URL = "http://192.168.1.6:8000/api/checkout";
         FloatingActionButton fab;
         DrawerLayout drawerLayout;
         BottomNavigationView bottomNavigationView;
